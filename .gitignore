@@ -1,0 +1,7 @@
+.vs/
+Debug/
+EasyEngine/
+x64/
+*.user
+*.png
+*.ttf
