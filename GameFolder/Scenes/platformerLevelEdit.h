@@ -50,8 +50,16 @@ public:
 	*/
 	void gridToggle(int gridSize, bool alignBottomLeft);
 	void multiplyEntity();
+
+	/*
+	Render the ImGUI interface.
+	*/
 	void ImGuiRender();
 	void sBBRender();
+
+	/*
+	Open a texture view.
+	*/
 	void textureWindow();
 
 	//test

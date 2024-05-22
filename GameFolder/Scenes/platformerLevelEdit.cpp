@@ -47,6 +47,9 @@ void PLevelEditor::sDoAction(Action action)
 	if (action.name() == "LeftClick" && action.type() == "END")
 	{
 		std::cout << action.name() << " : " << action.type() << std::endl;
+		sf::Vector2i bobo = editTexture.coordChange(sf::Vector2i(action.mouseX, action.mouseY));
+
+		MSG::TRACE("textureX: ", bobo.x, " textureY: ", bobo.y);
 	}
 	if (action.name() == "MouseWheel")
 	{

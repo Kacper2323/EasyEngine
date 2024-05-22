@@ -2,15 +2,23 @@
 
 #include <SFML/Graphics.hpp>
 #include "../../Utils/messages.h"
+#include "../../Vec2.h"
+
+enum TEWLayers
+{
+	TEWL_Window,
+	TEWL_Background,
+	TEWL_Texture
+};
 
 class TextureEditWindow
 {
 	sf::Vertex _selection[4];
 	sf::Sprite _sprite;
-	sf::Vector2u _position;
-	sf::Vector2u _size;
-	float backgroundScale = 1;
-	float relativeScale = 1;
+	sf::Vector2u _position;	//position of the background
+	sf::Vector2u _size;	//size of the texture
+	float backgroundScale = 1;	//scale of the background
+	float relativeScale = 1;	//scale of the texture relative to background coords
 
 public:
 	sf::RectangleShape background;
@@ -37,13 +45,25 @@ public:
 	void scaleToMainWindow(sf::Vector2u windowSize);
 
 	/*
+	Pan the texture withing the background.
+	*/
+	void pan(int mousePosX, int mousePosY, sf::Vector2i coordsInTexture);
+
+	/*
 	Zoom the texture in and out within the background.
 	\param ticks: ticks of mouse wheel (positive if up, negative if down)
 	\param mousePos: X and Y coordinates (within the rendering window) of the mouse at the moment of scroll
 	*/
 	void zoom(int ticks, int mousePosX, int mouosPosY);
 
-	const sf::Vector2i relativeMousePos(sf::Vector2u windowSize, sf::Vector2i mousePos) const;
+
+	/*
+	Calculates the coordinates of a point on a texture based on the coordinates in a window
+	(only within the background window, if outside of it's bounds - returns Vec(0,0))
+	*/
+	sf::Vector2i coordChange(sf::Vector2i pointPos);
+
+	const sf::Vector2i relativeMousePos(sf::Vector2u windowSize, int mousePosX, int mousePosY) const;
 	
 	sf::Sprite getTexture();
 };
