@@ -15,7 +15,6 @@ PLevelEditor::PLevelEditor(GameEngine* gameEnginePointer)
 
 void PLevelEditor::init()
 {
-
 	//initialize a list of available textures in textureData
 	textureData.texturePath = "./GameFolder/Assets/Textures/";
 	std::string fileName;
@@ -27,7 +26,6 @@ void PLevelEditor::init()
 		textureData.textureNames.push_back(fileName);
 	}
 	imGuiBinds.current_obj = &textureData.textureNames[0];
-	
 }
 
 void PLevelEditor::update()
@@ -41,35 +39,56 @@ void PLevelEditor::sDoAction(Action action)
 {
 	if (action.name() == "LeftClick" && action.type() == "START")
 	{
-		std::cout << action.name() << " : " << action.type() << std::endl;
-		MSG::TRACE("Absolute: ", sf::Mouse::getPosition(_game->_window).x, " : ", sf::Mouse::getPosition(_game->_window).y);
+		if (imGuiBinds.showTextureWindow)
+		{
+			editTexture.setPanning(sf::Vector2i(action.mouseX, action.mouseY));
+		}
 	}
 	if (action.name() == "LeftClick" && action.type() == "END")
 	{
-		std::cout << action.name() << " : " << action.type() << std::endl;
-		sf::Vector2i bobo = editTexture.coordChange(sf::Vector2i(action.mouseX, action.mouseY));
-
-		MSG::TRACE("textureX: ", bobo.x, " textureY: ", bobo.y);
+		if (imGuiBinds.showTextureWindow)
+		{
+			editTexture.stopPanning();
+		}
 	}
 	if (action.name() == "MouseWheel")
 	{
-		MSG::TRACE("mouse wheel: ", action.mouseWheelDelta);
-		editTexture.zoom(action.mouseWheelDelta, action.mouseX, action.mouseY);
-		
+		if (imGuiBinds.showTextureWindow)
+		{
+			editTexture.zoom(action.mouseWheelDelta, action.mouseX, action.mouseY);
+		}
+	}
+	if (action.name() == "RightClick" && action.type() == "START")
+	{
+		MSG::TRACE("Selection...");
+		editTexture.startSelection(sf::Mouse::getPosition(_game->_window));
+	}
+	if (action.name() == "RightClick" && action.type() == "END")
+	{
+		MSG::TRACE("Stop selection.");
+		editTexture.stopSelection();
 	}
 }
 
 void PLevelEditor::sRender()
 {
 	_game->_window.clear(imGuiBinds.background);
+	gridToggle(64, false);
+
 
 	if (imGuiBinds.showTextureWindow)
 	{
+		editTexture.pan(sf::Mouse::getPosition(_game->_window).x, sf::Mouse::getPosition(_game->_window).y);
 		textureWindow();
+		editTexture.selection(sf::Mouse::getPosition(_game->_window).x, sf::Mouse::getPosition(_game->_window).y);
+		if (editTexture.mouseState == mS_SELECTION)
+		{
+			_game->_window.draw(editTexture.selection_);
+		}
 	}
 	ImGuiRender();
 
-	gridToggle(64, false);
+	
 	ImGui::SFML::Render(_game->_window);
 	_game->_window.display();
 }

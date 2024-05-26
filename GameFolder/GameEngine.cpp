@@ -29,7 +29,7 @@ void GameEngine::init(const std::string& path)
 
 void GameEngine::run()
 {
-	while (_window.isOpen())
+	while (_running)
 	{
 		//ImGui::SFML::Update(_window, _deltaClock.restart());
 
