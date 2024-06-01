@@ -27,11 +27,11 @@ class TextureEditWindow
 	//temp test
 	int rectWidth = 0;
 	int rectHeight = 0;
+	sf::RectangleShape selection_;
+	sf::RectangleShape background;
 	
 public:
 	mouseState mouseState = mS_DEFAULT;
-	sf::RectangleShape selection_;
-	sf::RectangleShape background;
 	TextureEditWindow()
 	{};
 
@@ -41,7 +41,6 @@ public:
 	\param texture: referance to sf::Texture to be displayed
 	*/
 	void useTexture(sf::Texture& texture);
-
 
 	/*
 	Set the background for the texture view window.
@@ -53,7 +52,6 @@ public:
 	\param windowSize: size of the rendering window
 	*/
 	void scaleToMainWindow(sf::Vector2u windowSize);
-
 
 	/*
 	Zoom the texture in and out within the background.
@@ -106,7 +104,31 @@ public:
 	*/
 	sf::Vector2i coordChange(sf::Vector2i pointPos);
 
+	/*
+	Get the position of the mouse relative to the texture window
+	\param windowSize: size of the game window
+	\param mousePosX: X coordinate of the mouse position in the game window
+	\param mousePosY: Y coordinate of the mouse position in the game window
+
+	\return mouse position within the texture window, (-1, -1) if outside
+	*/
 	const sf::Vector2i relativeMousePos(sf::Vector2u windowSize, int mousePosX, int mousePosY) const;
 	
+	/*
+	Rendering system for the texture window.
+	\param window: game window to render to
+	*/
+	void sWindowRender(sf::RenderWindow& window);
+
+	/*
+	Rendering a selection box on the texture window.
+	\param window: game window to render to
+	*/
+	void sSelectionRender(sf::RenderWindow& window);
+
+	/*
+	Get a reference to the texture sprite.
+	\return sprite containing the texture to be rendered (with all the parameters set)
+	*/
 	sf::Sprite& getTexture();
 };

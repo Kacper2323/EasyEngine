@@ -95,10 +95,10 @@ sf::IntRect TextureEditWindow::stopSelection()
 {
 	mouseState = mS_DEFAULT;
 	
-
 	sf::Vector2i selectionPos = coordChange(sf::Vector2i((int)selection_.getPosition().x, (int)selection_.getPosition().y));
-	sf::Vector2i selectionSize = sf::Vector2i((int)(selection_.getSize().x / backgroundScale*relativeScale), (int)(selection_.getSize().y / backgroundScale/relativeScale));
-
+	sf::Vector2i selectionSize = sf::Vector2i((int)(selection_.getSize().x / (backgroundScale*relativeScale)),
+											  (int)(selection_.getSize().y / (backgroundScale*relativeScale)));
+	
 	sf::IntRect selectionInTexture(selectionPos.x, selectionPos.y, selectionSize.x, selectionSize.y);
 
 	return selectionInTexture;
@@ -196,8 +196,24 @@ const sf::Vector2i TextureEditWindow::relativeMousePos(sf::Vector2u windowSize, 
 	return sf::Vector2i(-1, -1);
 }
 
-sf::Sprite& TextureEditWindow::getTexture()
+void TextureEditWindow::sWindowRender(sf::RenderWindow& window)
 {
 	_sprite.setTextureRect(textureRect);
+	setBackground();
+	window.draw(background);
+	window.draw(_sprite);
+
+}
+
+void TextureEditWindow::sSelectionRender(sf::RenderWindow& window)
+{
+	if (mouseState == mS_SELECTION)
+	{
+		window.draw(selection_);
+	}
+}
+
+sf::Sprite& TextureEditWindow::getTexture()
+{
 	return _sprite;
 }

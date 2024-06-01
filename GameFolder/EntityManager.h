@@ -53,4 +53,11 @@ public:
 	\return vector of shared pointers to entities with a tag
 	*/
 	EntityVec& getEntities(const std::string& tag);
+
+
+	/*
+	Get all tags in the EntityMap.
+	\return vector containing all the tags
+	*/
+	const std::vector<std::string> getTags();
 };

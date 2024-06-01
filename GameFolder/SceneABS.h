@@ -10,7 +10,7 @@ typedef std::map<int, std::string> ActionMap;
 /*
 Abstract class to create scenes by inheritance.
 Contains a method for registering actions, an EntityManager object and an action map.
-Requires an implementation of simulate(int), doAction(Action) and sRender() methods to inherit.
+Requires an implementation of update(), doAction(Action) and sRender() methods to inherit.
 Requires a game engine pointer to have access to global assets and the scene switching method.
 */
 class Scene

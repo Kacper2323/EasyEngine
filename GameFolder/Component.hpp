@@ -31,6 +31,9 @@ class CSprite : public Component
 public:
 	sf::Sprite sprite;
 	CSprite() {};
+	CSprite(sf::Sprite& sprite)
+		:sprite(sprite)
+	{};
 	CSprite(sf::Texture& t, Vec2 size)
 	{
 		sprite.setTexture(t);

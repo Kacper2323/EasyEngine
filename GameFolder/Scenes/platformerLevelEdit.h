@@ -5,40 +5,54 @@
 #include "../Utils/messages.h"
 #include "./LevelEditorTools/textureEditWindow.h"
 
-struct textureData
+struct TextureData
 {
 	std::string texturePath;
 	std::vector <std::string> textureNames;
 };
 
-struct ImGuiBinds
+struct ImGuiVars
 {
-	std::string* current_obj = nullptr;
+	
+	std::string* currentTexture = nullptr;
+	std::string currentSprite;
+
 	sf::Color background = sf::Color::Black;
+	ImVec4 warningColor = { 1.0f, 1.0f, 0.0f, 1.0f };
+	ImVec4 messageColor = { 0.0f, 1.0f, 1.0f, 1.0f };
+
 	bool showTextureWindow = false;
+	bool showEntityCreationWindow = false;
+
+	//for the entity creation window
+	std::shared_ptr<Entity> entity;
 };
 
+typedef std::map<std::string, sf::Sprite> Sprites;
 
 class PLevelEditor : public Scene
 {
 	//implement a circular queue for ctrl-z ctrl-y functions
+	ImGuiVars _imGuiVars;
+	TextureData _textureData;
+	sf::Clock _deltaClock;
+	TextureEditWindow _textureWindow;
+	Assets _editorAssets;
+
+
+	Sprites _sprites;
+	sf::Sprite _selectedSprite;
+	void saveSprite(sf::Sprite& sprite);
 
 public:
-	ImGuiBinds imGuiBinds;
-	textureData textureData;
-	Assets editorAssets;
-	sf::Clock deltaClock;
-	TextureEditWindow editTexture;
-
-	
 
 	PLevelEditor();
 	PLevelEditor(GameEngine* gameEnginePointer);
 
 
-	void update();
-	void sDoAction(Action action);
-	void sRender();
+	virtual void update() override;
+	virtual void sDoAction(Action action) override;
+	virtual void sRender() override;
 
 	void init();
 	void saveLevel();
@@ -49,20 +63,32 @@ public:
 	\param alignBottomLeft: 1 to align the grid to bottom left corner, 0 if top left
 	*/
 	void gridToggle(int gridSize, bool alignBottomLeft);
+
 	void multiplyEntity();
 
+	////////////////////////////////////////////////////
 	/*
-	Render the ImGUI interface.
+		IMGUI INTERFACE
 	*/
-	void ImGuiRender();
+private:
+
+	void mainMenu();
+	void imGuiTextureMenu();
+	void imGuiEditEntity();
+	void imGuiListEntities();
+
+	struct MainMenuTags
+	{
+		bool showTextureMenu = false;
+		bool showListOfEntities = false;
+		bool showEntityEditWindow = false;
+	} _tagMenu;
+
+	struct ListMenuTags
+	{
+		std::shared_ptr<Entity> selectedEntity;
+	} _tagListMenu;
+	////////////////////////////////////////////////////
+
 	void sBBRender();
-
-	/*
-	Open a texture view.
-	*/
-	void textureWindow();
-
-	//test
-
-	void test();
 };
