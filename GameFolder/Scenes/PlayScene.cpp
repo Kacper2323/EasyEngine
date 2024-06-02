@@ -103,7 +103,7 @@ void PlayScene::sBBRender()
 			bb.setFillColor(translucent);
 			bb.setOutlineColor(redOutline);
 			bb.setOutlineThickness(1);
-			_game->_window.draw(bb);
+			_game->window().draw(bb);
 		}
 	}
 }
@@ -151,7 +151,7 @@ void PlayScene::sCollision()
 
 void PlayScene::sRender()
 {
-	_game->_window.clear();
+	_game->window().clear();
 
 	auto& p = _player->getComponent<CTransform>();
 	//std::cout << p.pos.x << " : " << p.pos.y << std::endl;
@@ -168,18 +168,18 @@ void PlayScene::sRender()
 
 			e->getComponent<CAnimation>().animation.update();
 
-			_game->_window.draw(e->getComponent<CAnimation>().animation.getSprite());
+			_game->window().draw(e->getComponent<CAnimation>().animation.getSprite());
 		}
 		else if (e->getComponent<CSprite>().has)
 		{
 			e->getComponent<CSprite>().sprite.setPosition(e->getComponent<CTransform>().pos.x, e->getComponent<CTransform>().pos.y);
-			_game->_window.draw(e->getComponent<CSprite>().sprite);
+			_game->window().draw(e->getComponent<CSprite>().sprite);
 		}
 
 	}
 	sBBRender();
 
-	_game->_window.display();
+	_game->window().display();
 }
 
 

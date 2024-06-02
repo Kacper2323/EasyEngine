@@ -4,7 +4,7 @@
 PLevelEditor::PLevelEditor() {};
 
 PLevelEditor::PLevelEditor(GameEngine* gameEnginePointer)
-	:Scene(gameEnginePointer)
+	:Scene(gameEnginePointer), _textureWindow(TextureEditWindow(_game->window().getSize()))
 {
 	registerAction(sf::Mouse::Left + mouseButtonOFFSET, "LeftClick");
 	registerAction(sf::Mouse::Right + mouseButtonOFFSET, "RightClick");
@@ -36,7 +36,8 @@ void PLevelEditor::init()
 void PLevelEditor::update()
 {
 	_entities.Update();
-	ImGui::SFML::Update(_game->_window, _deltaClock.restart());
+	ImGui::SFML::Update(_game->window(), _deltaClock.restart());
+
 	ImGui::ShowDemoWindow();
 }
 
@@ -58,19 +59,15 @@ void PLevelEditor::sDoAction(Action action)
 		}
 		if (action.name() == "MouseWheel")
 		{
-			if (!_textureWindow.mouseState == mS_PANNING) {
-				_textureWindow.zoom(action.mouseWheelDelta, action.mouseX, action.mouseY);
-			}
+			_textureWindow.zoom(action.mouseWheelDelta, action.mouseX, action.mouseY);
 		}
 		if (action.name() == "RightClick" && action.type() == "START")
 		{
-			_textureWindow.startSelection(sf::Mouse::getPosition(_game->_window));
+			_textureWindow.startSelection(sf::Mouse::getPosition(_game->window()));
 		}
 		if (action.name() == "RightClick" && action.type() == "END")
 		{
 			sf::IntRect selection = _textureWindow.stopSelection();
-			MSG::TRACE("pos: ", selection.top, " : ", selection.left);
-			MSG::TRACE("size: ", selection.width, " : ", selection.height);
 			sf::Texture& usedTexture = _editorAssets.getTexture(*_imGuiVars.currentTexture);
 			_selectedSprite = sf::Sprite(usedTexture, selection);
 		}
@@ -105,7 +102,7 @@ void PLevelEditor::saveSprite(sf::Sprite& sprite)
 
 void PLevelEditor::sRender()
 {
-	_game->_window.clear(_imGuiVars.background);
+	_game->window().clear(_imGuiVars.background);
 	gridToggle(64, false);
 
 	//A VERY quick rendering scheme for testing, needs to change
@@ -113,19 +110,16 @@ void PLevelEditor::sRender()
 	{
 		if (e->getComponent<CTransform>().has)
 		{
-			_game->_window.draw(e->getComponent<CSprite>().sprite);
+			_game->window().draw(e->getComponent<CSprite>().sprite);
 			e->getComponent<CSprite>().sprite.setPosition(e->getComponent<CTransform>().pos.x, e->getComponent<CTransform>().pos.y);
 		}
 	}
 
-
 	mainMenu();
+
 	if (_imGuiVars.showTextureWindow)
 	{
-		_textureWindow.pan(sf::Mouse::getPosition(_game->_window).x, sf::Mouse::getPosition(_game->_window).y);
-		_textureWindow.sWindowRender(_game->_window);
-		_textureWindow.selection(sf::Mouse::getPosition(_game->_window).x, sf::Mouse::getPosition(_game->_window).y);
-		_textureWindow.sSelectionRender(_game->_window);
+		_textureWindow.sWindowRender(_game->window());
 	}
 	if (_tagMenu.showEntityEditWindow)
 	{
@@ -140,8 +134,8 @@ void PLevelEditor::sRender()
 		imGuiTextureMenu();
 	}
 
-	ImGui::SFML::Render(_game->_window);
-	_game->_window.display();
+	ImGui::SFML::Render(_game->window());
+	_game->window().display();
 }
 
 
@@ -152,7 +146,7 @@ void PLevelEditor::sRender()
 */
 void PLevelEditor::gridToggle(int gridSize, bool alignBottomLeft)
 {
-	sf::Vector2u windowSize = _game->_window.getSize();
+	sf::Vector2u windowSize = _game->window().getSize();
 
 	sf::Vertex line[2];
 
@@ -162,7 +156,7 @@ void PLevelEditor::gridToggle(int gridSize, bool alignBottomLeft)
 		line[0].color = sf::Color::White;
 		line[1].position = sf::Vector2f(i, windowSize.y);
 		line[1].color = sf::Color::White;
-		_game->_window.draw(line, 2, sf::Lines);
+		_game->window().draw(line, 2, sf::Lines);
 	}
 
 	if (alignBottomLeft)
@@ -173,7 +167,7 @@ void PLevelEditor::gridToggle(int gridSize, bool alignBottomLeft)
 			line[0].color = sf::Color::White;
 			line[1].position = sf::Vector2f(windowSize.x, i);
 			line[1].color = sf::Color::White;
-			_game->_window.draw(line, 2, sf::Lines);
+			_game->window().draw(line, 2, sf::Lines);
 		}
 	}
 	else
@@ -184,7 +178,7 @@ void PLevelEditor::gridToggle(int gridSize, bool alignBottomLeft)
 			line[0].color = sf::Color::White;
 			line[1].position = sf::Vector2f(windowSize.x, i);
 			line[1].color = sf::Color::White;
-			_game->_window.draw(line, 2, sf::Lines);
+			_game->window().draw(line, 2, sf::Lines);
 		}
 	}
 }
@@ -426,7 +420,6 @@ void PLevelEditor::imGuiTextureMenu()
 				else
 				{
 					_textureWindow.useTexture(_editorAssets.getTexture(*_imGuiVars.currentTexture));
-					_textureWindow.scaleToMainWindow(_game->_window.getSize());
 					_imGuiVars.showTextureWindow = true;
 				}
 			}

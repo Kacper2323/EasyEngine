@@ -82,7 +82,7 @@ Assets& GameEngine::getAssets()
 	return _assets;
 }
 
-const sf::Window& GameEngine::window()
+sf::RenderWindow& GameEngine::window()
 {
 	return _window;
 }

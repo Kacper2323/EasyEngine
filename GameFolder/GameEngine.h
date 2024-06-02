@@ -20,9 +20,9 @@ class GameEngine
 	std::string						_currentScene;
 	Assets							_assets;
 	bool							_running = true;
+	sf::RenderWindow				_window;
 
 public:
-	sf::RenderWindow				_window;
 
 
 
@@ -76,7 +76,7 @@ public:
 	Get the game window.
 	\return const reference to the window
 	*/
-	const sf::Window& window();
+	sf::RenderWindow& window();
 
 	/*
 	A user input system.
