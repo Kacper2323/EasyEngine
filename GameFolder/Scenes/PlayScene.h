@@ -4,6 +4,7 @@
 #include "../GameEngine.h"
 #include "../Component.hpp"
 #include "../Animation.h"
+#include "../Utils/messages.h"
 
 struct PlayerConfig
 {
@@ -27,6 +28,9 @@ class PlayScene : public Scene
 	std::shared_ptr<Entity> _player;
 	PlayerState _playerState = PS_IDLE_R;
 	PlayerConfig	_playerConfig;
+	sf::View _view;
+	sf::Clock _deltaClock;
+	bool _showMenu = false;
 
 public:
 
@@ -41,4 +45,9 @@ public:
 	void sMovement();
 	void sCollision();
 	void sPlayerMovement();
+
+	void sSawSpawner();
+	void sViewSet();
+	void readLevelCfgF(const std::string& path);
+	void menu();
 };

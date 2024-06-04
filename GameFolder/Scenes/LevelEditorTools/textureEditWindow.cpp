@@ -59,7 +59,10 @@ void TextureEditWindow::pan(const sf::Vector2i& mousePosition)
 
 void TextureEditWindow::startSelection(const sf::Vector2i& mousePos)
 {
-	_mouseCoords = mousePos;
+	_mouseCoords = relativeMousePos(mousePos.x, mousePos.y);
+	if (_mouseCoords.x == -1 && _mouseCoords.y == -1) { return; };
+	_mouseCoords.x += _position.x;
+	_mouseCoords.y += _position.y;
 	mouseState = mS_SELECTION;
 }
 
@@ -74,7 +77,7 @@ void TextureEditWindow::selection(const sf::Vector2i& mousePosition)
 	//current mouse position
 	sf::Vector2i nextMousePos = relativeMousePos(mousePosition.x, mousePosition.y);
 	if (nextMousePos.x == -1 && nextMousePos.y == -1) { return; };
-
+	
 	_rectWidth = nextMousePos.x - mousePos.x;
 	_rectHeight = nextMousePos.y - mousePos.y;
 

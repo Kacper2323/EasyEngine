@@ -5,58 +5,28 @@
 #include "../Utils/messages.h"
 #include "./LevelEditorTools/textureEditWindow.h"
 
-struct TextureData
-{
-	std::string texturePath;
-	std::vector <std::string> textureNames;
-};
-
-struct ImGuiVars
-{
-	
-	std::string* currentTexture = nullptr;
-	std::string currentSprite;
-
-	sf::Color background = sf::Color::Black;
-	ImVec4 warningColor = { 1.0f, 1.0f, 0.0f, 1.0f };
-	ImVec4 messageColor = { 0.0f, 1.0f, 1.0f, 1.0f };
-
-	bool showTextureWindow = false;
-	bool showEntityCreationWindow = false;
-
-	//for the entity creation window
-	std::shared_ptr<Entity> entity;
-};
 
 typedef std::map<std::string, sf::Sprite> Sprites;
 
 class PLevelEditor : public Scene
 {
 	//implement a circular queue for ctrl-z ctrl-y functions
-	ImGuiVars _imGuiVars;
-	TextureData _textureData;
+
 	sf::Clock _deltaClock;
-	TextureEditWindow _textureWindow;
-	Assets _editorAssets;
-
-
-	Sprites _sprites;
-	sf::Sprite _selectedSprite;
-	void saveSprite(sf::Sprite& sprite);
 
 public:
 
 	PLevelEditor();
 	PLevelEditor(GameEngine* gameEnginePointer);
 
-
 	virtual void update() override;
 	virtual void sDoAction(Action action) override;
 	virtual void sRender() override;
 
 	void init();
-	void saveLevel();
-
+	void saveLevel(const std::string& path);
+	void sBBRender();
+	void readLevelCfgF(const std::string& path);
 	/*
 	Toggle a grid on the window.
 	\param gridSize: size of a square in the grid, in pixels
@@ -64,18 +34,29 @@ public:
 	*/
 	void gridToggle(int gridSize, bool alignBottomLeft);
 
-	void multiplyEntity();
+	void saveSprite(sf::Sprite& sprite);
 
-	////////////////////////////////////////////////////
-	/*
-		IMGUI INTERFACE
-	*/
+//////////////////////////////////////////////////////////////////////////
+/*
+IMGUI INTERFACE
+This section contains all of ImGui menus and specific data they use.
+*/
+//////////////////////////////////////////////////////////////////////////
+
 private:
+	struct ImGuiVars
+	{
+		sf::Color background = sf::Color::Black;
+		ImVec4 warningColor = { 1.0f, 1.0f, 0.0f, 1.0f };
+		ImVec4 messageColor = { 0.0f, 1.0f, 1.0f, 1.0f };
+	} _imGuiVars;
 
+	//////////////////////////////////////////////////
+	/*
+	Main menu.
+	Allows to turn on other windows.
+	*/
 	void mainMenu();
-	void imGuiTextureMenu();
-	void imGuiEditEntity();
-	void imGuiListEntities();
 
 	struct MainMenuTags
 	{
@@ -84,11 +65,55 @@ private:
 		bool showEntityEditWindow = false;
 	} _tagMenu;
 
+	//////////////////////////////////////////////////
+	/*
+	Texture menu.
+	Allows to load textures, pick and save sprites and create
+	entities with those sprites.
+	*/
+	void imGuiTextureMenu();
+
+	TextureEditWindow _textureWindow;
+
+	Sprites _sprites;
+	std::map<size_t, std::string> entityTextureMap;
+	sf::Sprite _selectedSprite;
+
+	struct TextureData
+	{
+		std::string texturePath;
+		std::vector <std::string> textureNames;
+	} _textureData;
+
+	struct TextureMenuTags
+	{
+		std::string* currentTexture = nullptr;
+		std::string currentSprite;
+		bool showTextureWindow = false;
+	} _tagTexMenu;
+
+	//////////////////////////////////////////////////
+	/*
+	List entities menu.
+	Allows to list and select entities by tag.
+	*/
+	void imGuiListEntities();
+
 	struct ListMenuTags
 	{
-		std::shared_ptr<Entity> selectedEntity;
+		std::shared_ptr<Entity> selectedEntity = {nullptr};
 	} _tagListMenu;
-	////////////////////////////////////////////////////
 
-	void sBBRender();
+	//////////////////////////////////////////////////
+	/*
+	Edit entity menu.
+	Allows to edit selected entities' components
+	*/
+	void imGuiEditEntity();
+
+	struct EntityMenuTags
+	{
+		
+	} _tagEntityMenu;
+
 };

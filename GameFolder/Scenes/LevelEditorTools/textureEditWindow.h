@@ -47,6 +47,14 @@ public:
 	{};
 
 	/*
+	resets the window zoom
+	*/
+	void resetView()
+	{
+		relativeScale = 1;
+	}
+
+	/*
 	Set the texture to be displaye.
 	\param texture: referance to sf::Texture to be displayed
 	*/

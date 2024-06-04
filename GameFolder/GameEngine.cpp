@@ -16,15 +16,20 @@ void GameEngine::init(const std::string& path)
 
 	ImGui::SFML::Init(_window);
 
-	_assets.addTexture("warriorBlue", "./GameFolder/Warrior_Blue.png");
-	_assets.addTexture("cloudFloor", "./GameFolder/cloud.png");
-	_assets.addAnimation("warriorIdle", "warriorBlue", 6, 4, Vec2(0, 0 * 192), Vec2(192, 192));
-	_assets.addAnimation("warriorRun", "warriorBlue", 6, 4, Vec2(0, 1*192), Vec2(192, 192));
-	_assets.addAnimation("warriorAttack", "warriorBlue", 6, 3, Vec2(0, 2*192), Vec2(192, 192));
-	_assets.addAnimation("warriorSwordJump", "warriorBlue", 6, 3, Vec2(0, 5*192), Vec2(192, 192));
-	_assets.addAnimation("warriorDash", "warriorBlue", 6, 3, Vec2(3, 0 * 192), Vec2(192, 192));
+	_assets.addTexture("Idle.png", "./GameFolder/Assets/Textures/Idle.png");
+	_assets.addTexture("Run.png", "./GameFolder/Assets/Textures/Run.png");
+	_assets.addTexture("Jump.png", "./GameFolder/Assets/Textures/Jump.png");
+	_assets.addTexture("Fall.png", "./GameFolder/Assets/Textures/Fall.png");
+	_assets.addTexture("saw38.png", "./GameFolder/Assets/Textures/saw38.png");
+	_assets.addTexture("terrain.png", "./GameFolder/Assets/Textures/terrain.png");
 
-	changeScene("levelEdit", std::make_shared<PLevelEditor>(this), 1);
+	_assets.addAnimation("frogIdle", "Idle.png", 11, 3, Vec2(0, 0), Vec2(32, 40));
+	_assets.addAnimation("frogRun", "Run.png", 12, 3, Vec2(0, 0), Vec2(32, 40));
+	_assets.addAnimation("frogJump", "Jump.png", 1, 2, Vec2(0, 0), Vec2(32, 40));
+	_assets.addAnimation("frogFall", "Fall.png", 1, 2, Vec2(0, 0), Vec2(32, 40));
+	_assets.addAnimation("saw", "saw38.png", 8, 2, Vec2(0, 0), Vec2(38, 38));
+
+	changeScene("PlayScene", std::make_shared<PlayScene>(this), 0);
 }
 
 void GameEngine::run()
