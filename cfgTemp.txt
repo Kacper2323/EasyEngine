@@ -1,45 +1,333 @@
-ENTITY platform
-CTransform 192 629 0 0 0
-CBoundingBox 45 9
-CSprite terrain.png 0 64 48 9
+ENTITY terrain
+CTransform 8 24 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 72 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 120 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 168 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 216 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 264 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 312 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 360 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 408 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 456 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 504 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 552 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 600 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 648 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 8 696 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 24 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 72 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 120 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 168 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 216 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 264 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 312 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 360 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 408 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 456 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 504 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 552 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 600 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 648 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 1272 696 0 0 0
+CSprite terrain.png 240 64 16 48
+END
+ENTITY terrain
+CTransform 40 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 88 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 136 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 184 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 232 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 280 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 328 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 376 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 424 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 472 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 520 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 568 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 616 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 664 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 712 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 760 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 808 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 856 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 904 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 952 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 1000 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 1048 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 1096 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 1144 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 1192 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 1240 8 0 0 0
+CSprite terrain.png 192 64 48 16
+END
+ENTITY terrain
+CTransform 40 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 88 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 136 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 184 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 232 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 280 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 328 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 376 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 424 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 472 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 520 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 568 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 616 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 664 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 712 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 760 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 808 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 856 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 904 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 952 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 1000 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 1048 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 1096 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 1144 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 1192 696 0 0 0
+CSprite terrain.png 96 0 48 48
+END
+ENTITY terrain
+CTransform 1240 696 0 0 0
+CSprite terrain.png 96 0 48 48
 END
 ENTITY platform
-CTransform 92 519 0 0 0
-CBoundingBox 48 9
-CSprite terrain.png 0 64 48 9
-END
-ENTITY platform
-CTransform 218 454 0 0 0
-CBoundingBox 48 9
-CSprite terrain.png 0 64 48 9
-END
-ENTITY platform
-CTransform 90 359 0 0 0
-CBoundingBox 48 9
-CSprite terrain.png 0 64 48 9
-END
-ENTITY platform
-CTransform 204 384 0 0 0
-CBoundingBox 48 9
-CSprite terrain.png 0 64 48 9
-END
-ENTITY platform
-CTransform 184 261 0 0 0
-CBoundingBox 48 9
-CSprite terrain.png 0 64 48 9
-END
-ENTITY platform
-CTransform 355 325 0 0 0
-CBoundingBox 48 9
-CSprite terrain.png 0 64 48 9
-END
-ENTITY platform
-CTransform 89 133 0 0 0
-CBoundingBox 48 9
-CSprite terrain.png 0 64 48 9
-END
-ENTITY platform
-CTransform 295 133 0 0 0
+CTransform 90 570 0 0 0
 CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
@@ -49,27 +337,82 @@ CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 721 581 0 0 0
+CTransform 602 571 0 0 0
 CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 1001 517 0 0 0
+CTransform 858 570 0 0 0
 CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 877 453 0 0 0
+CTransform 1114 570 0 0 0
 CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 1064 389 0 0 0
+CTransform 218 477 0 0 0
 CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 1177 325 0 0 0
+CTransform 473 475 0 0 0
+CBoundingBox 48 9
+CSprite terrain.png 0 64 48 9
+END
+ENTITY platform
+CTransform 729 475 0 0 0
+CBoundingBox 48 9
+CSprite terrain.png 0 64 48 9
+END
+ENTITY platform
+CTransform 986 475 0 0 0
+CBoundingBox 48 9
+CSprite terrain.png 0 64 48 9
+END
+ENTITY platform
+CTransform 1237 475 0 0 0
+CBoundingBox 48 9
+CSprite terrain.png 0 64 48 9
+END
+ENTITY platform
+CTransform 90 368 0 0 0
+CBoundingBox 48 9
+CSprite terrain.png 0 64 48 9
+END
+ENTITY platform
+CTransform 345 370 0 0 0
+CBoundingBox 48 9
+CSprite terrain.png 0 64 48 9
+END
+ENTITY platform
+CTransform 602 369 0 0 0
+CBoundingBox 48 9
+CSprite terrain.png 0 64 48 9
+END
+ENTITY platform
+CTransform 859 368 0 0 0
+CBoundingBox 48 9
+CSprite terrain.png 0 64 48 9
+END
+ENTITY platform
+CTransform 1115 367 0 0 0
+CBoundingBox 48 9
+CSprite terrain.png 0 64 48 9
+END
+ENTITY platform
+CTransform 216 260 0 0 0
+CBoundingBox 48 9
+CSprite terrain.png 0 64 48 9
+END
+ENTITY platform
+CTransform 473 261 0 0 0
+CBoundingBox 48 9
+CSprite terrain.png 0 64 48 9
+END
+ENTITY platform
+CTransform 730 261 0 0 0
 CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
@@ -79,72 +422,57 @@ CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 1113 156 0 0 0
+CTransform 1238 263 0 0 0
 CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 1129 580 0 0 0
+CTransform 88 143 0 0 0
 CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 446 454 0 0 0
+CTransform 346 143 0 0 0
 CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 870 198 0 0 0
+CTransform 601 140 0 0 0
 CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 708 435 0 0 0
+CTransform 858 141 0 0 0
 CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 936 67 0 0 0
+CTransform 1115 141 0 0 0
 CBoundingBox 48 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 764 325 0 0 0
-CBoundingBox 48 9
+CTransform 601 665 0 0 0
+CBoundingBox 53 9
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform
-CTransform 544 642 0 0 0
-CBoundingBox 48 9
-CSprite terrain.png 0 64 48 9
-END
-ENTITY platform
-CTransform 523 355 0 0 0
-CBoundingBox 48 9
-CSprite terrain.png 0 64 48 9
-END
-ENTITY platform
-CTransform 444 204 0 0 0
-CBoundingBox 48 9
-CSprite terrain.png 0 64 48 9
-END
-ENTITY platform
-CTransform 512 72 0 0 0
+CTransform 220 72 0 0 0
 CBoundingBox 48 16
 CSprite terrain.png 272 128 48 16
 END
 ENTITY platform
-CTransform 775 117 0 0 0
+CTransform 475 73 0 0 0
 CBoundingBox 48 16
 CSprite terrain.png 272 128 48 16
 END
 ENTITY platform
-CTransform 518 520 0 0 0
+CTransform 730 74 0 0 0
 CBoundingBox 48 16
 CSprite terrain.png 272 128 48 16
 END
 ENTITY platform
-CTransform 653 202 0 0 0
+CTransform 986 73 0 0 0
 CBoundingBox 48 16
 CSprite terrain.png 272 128 48 16
 END

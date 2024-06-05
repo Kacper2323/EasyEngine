@@ -14,65 +14,43 @@ PlayScene::PlayScene(GameEngine* game_ptr)
 
 void PlayScene::init()
 {
+	_pointTextBuffer.setFont(_game->getAssets().getFont("OpenSans.ttf"));
+	_pointTextBuffer.setStyle(sf::Text::Bold);
+	_pointTextBuffer.setCharacterSize(30);
+	_pointTextBuffer.setFillColor(sf::Color::White);
+	_pointTextBuffer.setOutlineThickness(1);
+	_pointTextBuffer.setOutlineColor(sf::Color::Black);
+
 	registerAction(sf::Keyboard::A, "mvLeft");
 	registerAction(sf::Keyboard::D, "mvRight");
 	registerAction(sf::Keyboard::Space, "mvJump");
-	registerAction(sf::Keyboard::LShift, "dash");
 	registerAction(sf::Keyboard::Escape, "menu");
 
 	_player = _entities.addEntity("frog");
-	_player->addComponent<CTransform>(Vec2(100, 200), Vec2(0, 0), 0);
+	_player->addComponent<CTransform>(Vec2(600, 600), Vec2(0, 0), 0);
 	_player->addComponent<CGravity>(0.85);
 	_player->addComponent<CAnimation>(_game->getAssets().getAnimation("frogIdle"));
 	_player->addComponent<CBoundingBox>(Vec2(20, 24));
 	_player->addComponent<CInput>();
+	_player->addComponent<CScore>(0);
 
 	std::shared_ptr<Entity> e;
 
-	//left wall
-	for (int i = 24; i < 744; i += 48)
-	{
-		e = _entities.addEntity("terrain");
-		e->addComponent<CTransform>(Vec2(8, i), Vec2(0, 0), 0);
-		e->addComponent<CSprite>(_game->getAssets().getTexture("terrain.png"), sf::IntRect(240, 64, 16, 48));
-	}
-	//right wall
-	for (int i = 24; i < 744; i += 48)
-	{
-		e = _entities.addEntity("terrain");
-		e->addComponent<CTransform>(Vec2(1280-8, i), Vec2(0, 0), 0);
-		e->addComponent<CSprite>(_game->getAssets().getTexture("terrain.png"), sf::IntRect(240, 64, 16, 48));
-	}
-	//ceiling
-	for (int i = 40; i < 1280; i += 48)
-	{
-		e = _entities.addEntity("tarrain");
-		e->addComponent<CTransform>(Vec2(i, 8), Vec2(0, 0), 0);
-		e->addComponent<CSprite>(_game->getAssets().getTexture("terrain.png"), sf::IntRect(192, 64, 48, 16));
-	}
-	//floor
-	for (int i = 40; i < 1280; i += 48)
-	{
-		e = _entities.addEntity("terrain");
-		e->addComponent<CTransform>(Vec2(i, 720 - 24), Vec2(0, 0), 0);
-		e->addComponent<CSprite>(_game->getAssets().getTexture("terrain.png"), sf::IntRect(96, 0, 48, 48));
-	}
-	
 	e = _entities.addEntity("boundry");
-	e->addComponent<CTransform>(Vec2(16/2, 720/2), Vec2(0,0), 0);
+	e->addComponent<CTransform>(Vec2(16 / 2, 720 / 2), Vec2(0, 0), 0);
 	e->addComponent<CBoundingBox>(Vec2(16, 720));
 
 	e = _entities.addEntity("boundry");
-	e->addComponent<CTransform>(Vec2(1280-8, 720/2), Vec2(0, 0), 0);
+	e->addComponent<CTransform>(Vec2(1280 - 8, 720 / 2), Vec2(0, 0), 0);
 	e->addComponent<CBoundingBox>(Vec2(16, 720));
 
 	e = _entities.addEntity("boundry");
-	e->addComponent<CTransform>(Vec2(1280/2, 8), Vec2(0, 0), 0);
-	e->addComponent<CBoundingBox>(Vec2(1280-16*2, 16));
+	e->addComponent<CTransform>(Vec2(1280 / 2, 8), Vec2(0, 0), 0);
+	e->addComponent<CBoundingBox>(Vec2(1280 - 16 * 2, 16));
 
 	e = _entities.addEntity("boundry");
-	e->addComponent<CTransform>(Vec2(1280/2, 720-24), Vec2(0, 0), 0);
-	e->addComponent<CBoundingBox>(Vec2(1280-16*2, 48));
+	e->addComponent<CTransform>(Vec2(1280 / 2, 720 - 24), Vec2(0, 0), 0);
+	e->addComponent<CBoundingBox>(Vec2(1280 - 16 * 2, 48));
 
 	readLevelCfgF("./cfgTemp.txt");
 }
@@ -143,10 +121,13 @@ void PlayScene::update()
 	if (_paused) { return; };
 
 	_entities.Update();
+	sLifespan();
 	sMovement();
 	sCollision();
 	sPlayerMovement();
 	sSawSpawner();
+	sAppleSpawner();
+	_pointTextBuffer.setString(std::to_string(_player->getComponent<CScore>().score));
 
 	_currentFrame++;
 }
@@ -247,9 +228,9 @@ void PlayScene::sMovement()
 			eTransform.pos += eTransform.velocity;
 
 
-			if (eTransform.velocity.y > 10)
+			if (eTransform.velocity.y > 7)
 			{
-				eTransform.velocity.y = 10;
+				eTransform.velocity.y = 7;
 			}
 
 		}
@@ -259,14 +240,39 @@ void PlayScene::sMovement()
 
 void PlayScene::sCollision()
 {
-	for (std::shared_ptr<Entity> e : _entities.getEntities("obstacle"))
+	for (std::shared_ptr<Entity> e : _entities.getEntities("saw"))
 	{
 		Vec2 ov = Physics::getOverlap(e, _player);
-		Vec2 prevOv = Physics::getPrevOverlap(e, _player);
 
-		if (ov.y >= 0 && ov.x >=0)
+		if (ov.y > 0 && ov.x > 0)
 		{
-			_player->getComponent<CTransform>().pos.y = _player->getComponent<CTransform>().pos.y - ov.y;
+			e->destroy();
+			_player->addComponent<CAnimation>(_game->getAssets().getAnimation("hit"));
+			_player->getComponent<CScore>().score = 0;
+			_showMenu = true;
+			_paused = _showMenu;
+		}
+	}
+	if (_player->getComponent<CAnimation>().animation.hasEnded() && _player->getComponent<CAnimation>().animation.getName() == "hit")
+	{
+		_player->getComponent<CTransform>().pos = Vec2(600, 600);
+		
+		for (auto e : _entities.getEntities("saw"))
+		{
+			e->destroy();
+		}
+	}
+
+
+
+	for (std::shared_ptr<Entity> e : _entities.getEntities("apple"))
+	{
+		Vec2 ov = Physics::getOverlap(e, _player);
+
+		if (ov.y > 0 && ov.x > 0)
+		{
+			e->destroy();
+			_player->getComponent<CScore>().score++;
 		}
 	}
 
@@ -363,6 +369,8 @@ void PlayScene::sViewSet()
 		viewCenterX = windowSize.x - windowSize.x / 4;
 	}
 	
+	_pointTextBuffer.setPosition(viewCenterX - windowSize.x/4 + 5, viewCenterY - windowSize.y/4-5);
+
 	_view.setCenter(viewCenterX, viewCenterY);
 
 	_game->window().setView(_view);
@@ -372,7 +380,7 @@ void PlayScene::sRender()
 {
 	_game->window().clear(sf::Color(137, 207, 240, 255));
 
-	//sViewSet();
+	sViewSet();
 
 	for (std::shared_ptr<Entity> e : _entities.getEntities())
 	{
@@ -395,27 +403,69 @@ void PlayScene::sRender()
 		}
 
 	}
-	sBBRender();
+	//sBBRender();
+
+	_game->window().draw(_pointTextBuffer);
+
 	ImGui::SFML::Render(_game->window());
 	_game->window().display();
 }
 
 void PlayScene::sSawSpawner()
 {
-	static int frame = _currentFrame;
-	if (_currentFrame - frame < 60) { return; };
+	if (_currentFrame - _sawFrameCounter < 20) { return; };
 
-	frame = _currentFrame;
+	_sawFrameCounter = _currentFrame;
 	auto e = _entities.addEntity("saw");
 
 	int Ypos = 50 + (rand() % 600);
 	int Xpos = Ypos%2 ? -50 : 1330;
 
-	float Xvel = Ypos%2 ? 10 : -10;
+	float Xvel = Ypos%2 ? 6 : -6;
 
 	e->addComponent<CTransform>(Vec2(Xpos, Ypos), Vec2(Xvel, 0), 0);
 	e->addComponent<CAnimation>(_game->getAssets().getAnimation("saw"));
+	e->addComponent<CBoundingBox>(Vec2(30, 30));
+	e->addComponent<CLifespan>(240);
+}
 
+void PlayScene::sAppleSpawner()
+{
+	if (_currentFrame - _appleFrameCounter < 120) { return; };
+
+	_appleFrameCounter = _currentFrame;
+
+	EntityVec& platforms = _entities.getEntities("platform");
+
+	int platform = (rand() % platforms.size());
+
+	std::shared_ptr<Entity> randomPlatform = platforms[platform];
+	auto platformPos = randomPlatform->getComponent<CTransform>().pos;
+
+	auto e = _entities.addEntity("apple");
+
+	static int appleSize = 20;
+
+	e->addComponent<CTransform>(Vec2(platformPos.x, platformPos.y-appleSize), Vec2(0, 0), 0);
+	e->addComponent<CBoundingBox>(Vec2(appleSize, appleSize));
+	e->addComponent<CScore>(1);
+	e->addComponent<CAnimation>(_game->getAssets().getAnimation("apple"));
+	e->addComponent<CLifespan>(300);
+}
+
+void PlayScene::sLifespan()
+{
+	for (auto e : _entities.getEntities())
+	{
+		if (e->getComponent<CLifespan>().has)
+		{
+			e->getComponent<CLifespan>().remaining--;
+			if (e->getComponent<CLifespan>().remaining <= 0)
+			{
+				e->destroy();
+			}
+		}
+	}
 }
 
 void PlayScene::sPlayerMovement()
@@ -427,7 +477,7 @@ void PlayScene::sPlayerMovement()
 
 	auto& pTransform = _player->getComponent<CTransform>();
 
-	if (pTransform.pos.y != pTransform.prevPos.y)
+	if (pTransform.pos.y != pTransform.prevPos.y && _player->getComponent<CAnimation>().animation.getName() != "hit")
 	{
 		if (pTransform.pos.y - pTransform.prevPos.y < 0)
 		{

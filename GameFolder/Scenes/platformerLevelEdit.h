@@ -13,6 +13,7 @@ class PLevelEditor : public Scene
 	//implement a circular queue for ctrl-z ctrl-y functions
 
 	sf::Clock _deltaClock;
+	sf::View _view;
 
 public:
 
@@ -46,7 +47,7 @@ This section contains all of ImGui menus and specific data they use.
 private:
 	struct ImGuiVars
 	{
-		sf::Color background = sf::Color::Black;
+		sf::Color background = sf::Color(137, 207, 240, 255);
 		ImVec4 warningColor = { 1.0f, 1.0f, 0.0f, 1.0f };
 		ImVec4 messageColor = { 0.0f, 1.0f, 1.0f, 1.0f };
 	} _imGuiVars;

@@ -35,6 +35,8 @@ void Assets::addFont(const std::string& name, const std::string& path)
 	{
 		std::cerr << "Failed to load font: " << name << " at " << path << std::endl;
 	}
+
+	_fonts[name] = font;
 }
 
 //void Assets::addAnimation(const std::string& name, const std::string& path)

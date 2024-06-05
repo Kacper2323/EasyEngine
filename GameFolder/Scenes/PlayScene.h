@@ -8,7 +8,7 @@
 
 struct PlayerConfig
 {
-	float speed = 5.0f;
+	float speed = 4.0f;
 };
 
 enum PlayerState 
@@ -30,6 +30,7 @@ class PlayScene : public Scene
 	PlayerConfig	_playerConfig;
 	sf::View _view;
 	sf::Clock _deltaClock;
+	sf::Text _pointTextBuffer;
 	bool _showMenu = false;
 
 public:
@@ -38,15 +39,19 @@ public:
 	PlayScene(GameEngine* game_ptr);
 	void init();
 
-	void update();
-	void sDoAction(Action action);
-	void sRender();
+	virtual void update() override;
+	virtual void sDoAction(Action action) override;
+	virtual void sRender() override;
 	void sBBRender();
 	void sMovement();
 	void sCollision();
 	void sPlayerMovement();
+	void sLifespan();
 
+	int _appleFrameCounter = 0;
+	int _sawFrameCounter = 0;
 	void sSawSpawner();
+	void sAppleSpawner();
 	void sViewSet();
 	void readLevelCfgF(const std::string& path);
 	void menu();

@@ -10,6 +10,7 @@ GameEngine::GameEngine(const std::string& path)
 void GameEngine::init(const std::string& path)
 {
 	_window.create(sf::VideoMode(1280, 720), "GAME1", sf::Style::Titlebar | sf::Style::Close);
+	//_window.create(sf::VideoMode(1280, 720), "GAME1", sf::Style::Fullscreen);
 
 	_window.setFramerateLimit(60);
 	//_window.setVerticalSyncEnabled(true);
@@ -22,12 +23,18 @@ void GameEngine::init(const std::string& path)
 	_assets.addTexture("Fall.png", "./GameFolder/Assets/Textures/Fall.png");
 	_assets.addTexture("saw38.png", "./GameFolder/Assets/Textures/saw38.png");
 	_assets.addTexture("terrain.png", "./GameFolder/Assets/Textures/terrain.png");
+	_assets.addTexture("apple.png", "./GameFolder/Assets/Textures/apple.png");
+	_assets.addTexture("hit.png", "./GameFolder/Assets/Textures/hit.png");
 
 	_assets.addAnimation("frogIdle", "Idle.png", 11, 3, Vec2(0, 0), Vec2(32, 40));
 	_assets.addAnimation("frogRun", "Run.png", 12, 3, Vec2(0, 0), Vec2(32, 40));
 	_assets.addAnimation("frogJump", "Jump.png", 1, 2, Vec2(0, 0), Vec2(32, 40));
 	_assets.addAnimation("frogFall", "Fall.png", 1, 2, Vec2(0, 0), Vec2(32, 40));
 	_assets.addAnimation("saw", "saw38.png", 8, 2, Vec2(0, 0), Vec2(38, 38));
+	_assets.addAnimation("apple", "apple.png", 17, 2, Vec2(0, 0), Vec2(32, 32));
+	_assets.addAnimation("hit", "hit.png", 7, 2, Vec2(0, 0), Vec2(32, 32));
+
+	_assets.addFont("OpenSans.ttf", "./GameFolder/zOpenSans.ttf");
 
 	changeScene("PlayScene", std::make_shared<PlayScene>(this), 0);
 }

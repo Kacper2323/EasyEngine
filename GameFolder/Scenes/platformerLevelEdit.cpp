@@ -34,21 +34,51 @@ void PLevelEditor::init()
 	if (_textureData.textureNames.empty()) { return; };
 	_tagTexMenu.currentTexture = &_textureData.textureNames[0];
 
-	auto e = _entities.addEntity("boundry");
-	e->addComponent<CTransform>(Vec2(16 / 2, 720 / 2), Vec2(0, 0), 0);
-	e->addComponent<CBoundingBox>(Vec2(16, 720));
+	//std::shared_ptr<Entity> e;
+	////left wall
+	//for (int i = 24; i < 744; i += 48)
+	//{
+	//	e = _entities.addEntity("terrain");
+	//	e->addComponent<CTransform>(Vec2(8, i), Vec2(0, 0), 0);
+	//	e->addComponent<CSprite>(_game->getAssets().getTexture("terrain.png"), sf::IntRect(240, 64, 16, 48));
+	//}
+	////right wall
+	//for (int i = 24; i < 744; i += 48)
+	//{
+	//	e = _entities.addEntity("terrain");
+	//	e->addComponent<CTransform>(Vec2(1280 - 8, i), Vec2(0, 0), 0);
+	//	e->addComponent<CSprite>(_game->getAssets().getTexture("terrain.png"), sf::IntRect(240, 64, 16, 48));
+	//}
+	////ceiling
+	//for (int i = 40; i < 1280; i += 48)
+	//{
+	//	e = _entities.addEntity("terrain");
+	//	e->addComponent<CTransform>(Vec2(i, 8), Vec2(0, 0), 0);
+	//	e->addComponent<CSprite>(_game->getAssets().getTexture("terrain.png"), sf::IntRect(192, 64, 48, 16));
+	//}
+	////floor
+	//for (int i = 40; i < 1280; i += 48)
+	//{
+	//	e = _entities.addEntity("terrain");
+	//	e->addComponent<CTransform>(Vec2(i, 720 - 24), Vec2(0, 0), 0);
+	//	e->addComponent<CSprite>(_game->getAssets().getTexture("terrain.png"), sf::IntRect(96, 0, 48, 48));
+	//}
 
-	e = _entities.addEntity("boundry");
-	e->addComponent<CTransform>(Vec2(1280 - 8, 720 / 2), Vec2(0, 0), 0);
-	e->addComponent<CBoundingBox>(Vec2(16, 720));
+	//e = _entities.addEntity("boundry");
+	//e->addComponent<CTransform>(Vec2(16 / 2, 720 / 2), Vec2(0, 0), 0);
+	//e->addComponent<CBoundingBox>(Vec2(16, 720));
 
-	e = _entities.addEntity("boundry");
-	e->addComponent<CTransform>(Vec2(1280 / 2, 8), Vec2(0, 0), 0);
-	e->addComponent<CBoundingBox>(Vec2(1280 - 16 * 2, 16));
+	//e = _entities.addEntity("boundry");
+	//e->addComponent<CTransform>(Vec2(1280 - 8, 720 / 2), Vec2(0, 0), 0);
+	//e->addComponent<CBoundingBox>(Vec2(16, 720));
 
-	e = _entities.addEntity("boundry");
-	e->addComponent<CTransform>(Vec2(1280 / 2, 720 - 24), Vec2(0, 0), 0);
-	e->addComponent<CBoundingBox>(Vec2(1280 - 16 * 2, 48));
+	//e = _entities.addEntity("boundry");
+	//e->addComponent<CTransform>(Vec2(1280 / 2, 8), Vec2(0, 0), 0);
+	//e->addComponent<CBoundingBox>(Vec2(1280 - 16 * 2, 16));
+
+	//e = _entities.addEntity("boundry");
+	//e->addComponent<CTransform>(Vec2(1280 / 2, 720 - 24), Vec2(0, 0), 0);
+	//e->addComponent<CBoundingBox>(Vec2(1280 - 16 * 2, 48));
 
 	readLevelCfgF("./cfgTemp.txt");
 }
@@ -57,6 +87,8 @@ void PLevelEditor::init()
 
 void PLevelEditor::update()
 {
+	_view.reset(sf::FloatRect(0, 0, 1280, 720));
+	_game->window().setView(_view);
 	_entities.Update();
 	ImGui::SFML::Update(_game->window(), _deltaClock.restart());
 
@@ -385,7 +417,14 @@ void PLevelEditor::imGuiListEntities()
 						label += e->is_alive() ? "true" : "false";
 
 						if (ImGui::Selectable(label.c_str(), isSelected, ImGuiSelectableFlags_AllowDoubleClick))
+						{
 							_tagListMenu.selectedEntity = e;
+							for (auto obj : _entities.getEntities())
+							{
+								obj->getComponent<CBoundingBox>().physical = 1;
+							}
+							e->getComponent<CBoundingBox>().physical = 0;
+						}
 
 						if(isSelected)
 							ImGui::SetItemDefaultFocus();
