@@ -39,19 +39,6 @@ void Assets::addFont(const std::string& name, const std::string& path)
 	_fonts[name] = font;
 }
 
-//void Assets::addAnimation(const std::string& name, const std::string& path)
-//{
-//	Animation animation;
-//
-//	std::string animTextureName = "anim_" + name;
-//
-//	addTexture(animTextureName, path);
-//
-//
-//
-//
-//}
-
 void Assets::addAnimation(	const std::string& name,
 								const std::string& textureName,
 								int frameCount,

@@ -34,52 +34,6 @@ void PLevelEditor::init()
 	if (_textureData.textureNames.empty()) { return; };
 	_tagTexMenu.currentTexture = &_textureData.textureNames[0];
 
-	//std::shared_ptr<Entity> e;
-	////left wall
-	//for (int i = 24; i < 744; i += 48)
-	//{
-	//	e = _entities.addEntity("terrain");
-	//	e->addComponent<CTransform>(Vec2(8, i), Vec2(0, 0), 0);
-	//	e->addComponent<CSprite>(_game->getAssets().getTexture("terrain.png"), sf::IntRect(240, 64, 16, 48));
-	//}
-	////right wall
-	//for (int i = 24; i < 744; i += 48)
-	//{
-	//	e = _entities.addEntity("terrain");
-	//	e->addComponent<CTransform>(Vec2(1280 - 8, i), Vec2(0, 0), 0);
-	//	e->addComponent<CSprite>(_game->getAssets().getTexture("terrain.png"), sf::IntRect(240, 64, 16, 48));
-	//}
-	////ceiling
-	//for (int i = 40; i < 1280; i += 48)
-	//{
-	//	e = _entities.addEntity("terrain");
-	//	e->addComponent<CTransform>(Vec2(i, 8), Vec2(0, 0), 0);
-	//	e->addComponent<CSprite>(_game->getAssets().getTexture("terrain.png"), sf::IntRect(192, 64, 48, 16));
-	//}
-	////floor
-	//for (int i = 40; i < 1280; i += 48)
-	//{
-	//	e = _entities.addEntity("terrain");
-	//	e->addComponent<CTransform>(Vec2(i, 720 - 24), Vec2(0, 0), 0);
-	//	e->addComponent<CSprite>(_game->getAssets().getTexture("terrain.png"), sf::IntRect(96, 0, 48, 48));
-	//}
-
-	//e = _entities.addEntity("boundry");
-	//e->addComponent<CTransform>(Vec2(16 / 2, 720 / 2), Vec2(0, 0), 0);
-	//e->addComponent<CBoundingBox>(Vec2(16, 720));
-
-	//e = _entities.addEntity("boundry");
-	//e->addComponent<CTransform>(Vec2(1280 - 8, 720 / 2), Vec2(0, 0), 0);
-	//e->addComponent<CBoundingBox>(Vec2(16, 720));
-
-	//e = _entities.addEntity("boundry");
-	//e->addComponent<CTransform>(Vec2(1280 / 2, 8), Vec2(0, 0), 0);
-	//e->addComponent<CBoundingBox>(Vec2(1280 - 16 * 2, 16));
-
-	//e = _entities.addEntity("boundry");
-	//e->addComponent<CTransform>(Vec2(1280 / 2, 720 - 24), Vec2(0, 0), 0);
-	//e->addComponent<CBoundingBox>(Vec2(1280 - 16 * 2, 48));
-
 	readLevelCfgF("./cfgTemp.txt");
 }
 
@@ -173,7 +127,6 @@ void PLevelEditor::sDoAction(Action action)
 		if (action.name() == "LeftClick" && action.type() == "END")
 		{
 			//the window has to be hidden for the sliders to work...
-			//I need a proper windowing system. This will work fine for now...
 			MSG::TRACE("Sprite modyfied.");
 			_tagTexMenu.showTextureWindow = false;
 			sf::IntRect selection = _textureWindow.stopSelection();

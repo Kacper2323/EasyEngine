@@ -10,10 +10,7 @@ GameEngine::GameEngine(const std::string& path)
 void GameEngine::init(const std::string& path)
 {
 	_window.create(sf::VideoMode(1280, 720), "GAME1", sf::Style::Titlebar | sf::Style::Close);
-	//_window.create(sf::VideoMode(1280, 720), "GAME1", sf::Style::Fullscreen);
-
 	_window.setFramerateLimit(60);
-	//_window.setVerticalSyncEnabled(true);
 
 	ImGui::SFML::Init(_window);
 
@@ -43,8 +40,6 @@ void GameEngine::run()
 {
 	while (_running)
 	{
-		//ImGui::SFML::Update(_window, _deltaClock.restart());
-
 		update();
 
 		sUserInput();
@@ -104,7 +99,6 @@ void GameEngine::sUserInput()
 	sf::Event event;
 	while (_window.pollEvent(event))
 	{
-		//ImGui::SFML::ProcessEvent(event);
 		ImGui::SFML::ProcessEvent(event);
 		if (event.type == sf::Event::Closed)
 		{
