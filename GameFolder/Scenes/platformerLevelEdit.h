@@ -24,18 +24,33 @@ public:
 	virtual void sDoAction(Action action) override;
 	virtual void sRender() override;
 
+	/*
+	Initializes the level.
+	Reads all textures in the Textures folder.
+	*/
 	void init();
+
+	/*
+	Saves the level configuration in the config file.
+	*/
 	void saveLevel(const std::string& path);
+
+	/*
+	Renders bounding boxes of all entities.
+	*/
 	void sBBRender();
+
+	/*
+	Reads the config file and loads all the entities.
+	*/
 	void readLevelCfgF(const std::string& path);
+
 	/*
 	Toggle a grid on the window.
 	\param gridSize: size of a square in the grid, in pixels
 	\param alignBottomLeft: 1 to align the grid to bottom left corner, 0 if top left
 	*/
 	void gridToggle(int gridSize, bool alignBottomLeft);
-
-	void saveSprite(sf::Sprite& sprite);
 
 //////////////////////////////////////////////////////////////////////////
 /*
@@ -76,6 +91,12 @@ private:
 
 	TextureEditWindow _textureWindow;
 
+	/*
+	Save the selected sprite.
+	\param sprite to be saved in the _sprites map.
+	*/
+	void saveSprite(sf::Sprite& sprite);
+
 	Sprites _sprites;
 	std::map<size_t, std::string> entityTextureMap;
 	sf::Sprite _selectedSprite;
@@ -111,10 +132,5 @@ private:
 	Allows to edit selected entities' components
 	*/
 	void imGuiEditEntity();
-
-	struct EntityMenuTags
-	{
-		
-	} _tagEntityMenu;
 
 };
