@@ -1,6 +1,6 @@
 #include "textureEditWindow.h"
-#include "../../Utils/messages.h"
-#include "../../Utils/mathStuff.h"
+#include "../../../Utils/messages.h"
+#include "../../../Utils/mathStuff.h"
 
 
 

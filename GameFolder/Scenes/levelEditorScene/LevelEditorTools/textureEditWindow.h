@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "../../Utils/messages.h"
-#include "../../Vec2.h"
+#include "../../../Utils/messages.h"
+#include "../../../Vec2.h"
 
 enum mouseState
 {

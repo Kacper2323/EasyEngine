@@ -1,8 +1,8 @@
 #pragma once
-#include "../GameEngine.h"
-#include "../SceneABS.h"
+#include "../../GameEngine.h"
+#include "../../SceneABS.h"
 #include <filesystem>
-#include "../Utils/messages.h"
+#include "../../Utils/messages.h"
 #include "./LevelEditorTools/textureEditWindow.h"
 
 
@@ -76,30 +76,25 @@ private:
 
 	struct MainMenuTags
 	{
-		bool showTextureMenu = false;
+		bool showMakeSpriteWindow = false;
 		bool showListOfEntities = false;
 		bool showEntityEditWindow = false;
 	} _tagMenu;
 
 	//////////////////////////////////////////////////
 	/*
-	Texture menu.
-	Allows to load textures, pick and save sprites and create
-	entities with those sprites.
-	*/
-	void imGuiTextureMenu();
-
-	TextureEditWindow _textureWindow;
-
-	/*
 	Save the selected sprite.
 	\param sprite to be saved in the _sprites map.
 	*/
 	void saveSprite(sf::Sprite& sprite);
 
+	void imGuiMakeSprite();
 	Sprites _sprites;
-	std::map<size_t, std::string> entityTextureMap;
 	sf::Sprite _selectedSprite;
+	sf::IntRect _spriteRect;
+	char _spriteNameBuffer[50] = {""};
+	std::string _selectedTexture;
+	std::string _selectedSpriteInMap;
 
 	struct TextureData
 	{
@@ -107,12 +102,6 @@ private:
 		std::vector <std::string> textureNames;
 	} _textureData;
 
-	struct TextureMenuTags
-	{
-		std::string* currentTexture = nullptr;
-		std::string currentSprite;
-		bool showTextureWindow = false;
-	} _tagTexMenu;
 
 	//////////////////////////////////////////////////
 	/*
@@ -121,13 +110,11 @@ private:
 	*/
 	void imGuiListEntities();
 
-	struct ListMenuTags
-	{
-		std::shared_ptr<Entity> selectedEntity = {nullptr};
-	} _tagListMenu;
+	std::shared_ptr<Entity> selectedEntity = {nullptr};
+
 
 	//////////////////////////////////////////////////
-	/*
+	/*	
 	Edit entity menu.
 	Allows to edit selected entities' components
 	*/

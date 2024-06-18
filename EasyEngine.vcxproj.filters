@@ -60,13 +60,13 @@
     <ClCompile Include="GameFolder\Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameFolder\Scenes\PlayScene.cpp">
+    <ClCompile Include="GameFolder\Scenes\PlayScene\PlayScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameFolder\Scenes\platformerLevelEdit.cpp">
+    <ClCompile Include="GameFolder\Scenes\levelEditorScene\platformerLevelEdit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameFolder\Scenes\LevelEditorTools\textureEditWindow.cpp">
+    <ClCompile Include="GameFolder\Scenes\levelEditorScene\LevelEditorTools\textureEditWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,16 +125,16 @@
     <ClInclude Include="GameFolder\Assets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameFolder\Scenes\PlayScene.h">
+    <ClInclude Include="GameFolder\Scenes\PlayScene\PlayScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameFolder\Scenes\platformerLevelEdit.h">
+    <ClInclude Include="GameFolder\Scenes\levelEditorScene\platformerLevelEdit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameFolder\Utils\messages.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameFolder\Scenes\LevelEditorTools\textureEditWindow.h">
+    <ClInclude Include="GameFolder\Scenes\levelEditorScene\LevelEditorTools\textureEditWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameFolder\Utils\mathStuff.h">

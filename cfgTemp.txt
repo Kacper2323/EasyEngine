@@ -327,8 +327,8 @@ CTransform 1240 696 0 0 0
 CSprite terrain.png 96 0 48 48
 END
 ENTITY platform
-CTransform 90 570 0 0 0
-CBoundingBox 48 9
+CTransform 89 570 0 0 0
+CBoundingBox 46 8
 CSprite terrain.png 0 64 48 9
 END
 ENTITY platform

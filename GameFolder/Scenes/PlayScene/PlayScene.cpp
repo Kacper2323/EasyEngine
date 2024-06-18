@@ -1,7 +1,7 @@
 #include "PlayScene.h"
-#include "../Physics.h"
+#include "../../Physics.h"
 #include <fstream>
-#include "./platformerLevelEdit.h"
+#include "../levelEditorScene/platformerLevelEdit.h"
 
 PlayScene::PlayScene() {};
 
@@ -265,7 +265,7 @@ void PlayScene::sCollision()
 
 
 
-	for (std::shared_ptr<Entity> e : _entities.getEntities("apple"))
+	for (std::shared_ptr<Entity> e : _entities.getEntities("Apple"))
 	{
 		Vec2 ov = Physics::getOverlap(e, _player);
 
@@ -442,14 +442,14 @@ void PlayScene::sAppleSpawner()
 	std::shared_ptr<Entity> randomPlatform = platforms[platform];
 	auto platformPos = randomPlatform->getComponent<CTransform>().pos;
 
-	auto e = _entities.addEntity("apple");
+	auto e = _entities.addEntity("Apple");
 
 	static int appleSize = 20;
 
 	e->addComponent<CTransform>(Vec2(platformPos.x, platformPos.y-appleSize), Vec2(0, 0), 0);
 	e->addComponent<CBoundingBox>(Vec2(appleSize, appleSize));
 	e->addComponent<CScore>(1);
-	e->addComponent<CAnimation>(_game->getAssets().getAnimation("apple"));
+	e->addComponent<CAnimation>(_game->getAssets().getAnimation("Apple"));
 	e->addComponent<CLifespan>(300);
 }
 

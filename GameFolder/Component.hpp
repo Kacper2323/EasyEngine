@@ -32,13 +32,16 @@ class CSprite : public Component
 {
 public:
 	sf::Sprite sprite;
+
 	CSprite() {};
+
 	CSprite(sf::Sprite& spritee)
 		:sprite(spritee)
 	{
 		sf::IntRect rect = spritee.getTextureRect();
 		sprite.setOrigin(rect.width / 2.0f, rect.height / 2.0f);
 	};
+
 	CSprite(sf::Texture& t, const sf::IntRect& rect)
 	{
 		sprite.setTexture(t);

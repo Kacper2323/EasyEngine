@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../SceneABS.h"
-#include "../GameEngine.h"
-#include "../Component.hpp"
-#include "../Animation.h"
-#include "../Utils/messages.h"
+#include "../../SceneABS.h"
+#include "../../GameEngine.h"
+#include "../../Component.hpp"
+#include "../../Animation.h"
+#include "../../Utils/messages.h"
 
 struct PlayerConfig
 {
