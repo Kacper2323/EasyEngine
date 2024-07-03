@@ -140,5 +140,8 @@
     <ClInclude Include="GameFolder\Utils\mathStuff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameFolder\Physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

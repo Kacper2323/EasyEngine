@@ -169,6 +169,7 @@
     <ClInclude Include="GameFolder\Entity.h" />
     <ClInclude Include="GameFolder\EntityManager.h" />
     <ClInclude Include="GameFolder\GameEngine.h" />
+    <ClInclude Include="GameFolder\Physics.h" />
     <ClInclude Include="GameFolder\SceneABS.h" />
     <ClInclude Include="GameFolder\Scenes\levelEditorScene\LevelEditorTools\textureEditWindow.h" />
     <ClInclude Include="GameFolder\Scenes\levelEditorScene\platformerLevelEdit.h" />

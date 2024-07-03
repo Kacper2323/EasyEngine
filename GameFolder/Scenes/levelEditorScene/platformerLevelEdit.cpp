@@ -58,6 +58,31 @@ void PLevelEditor::sDoAction(Action action)
 	// user input actions within the texture window
 	// if the texture window is on, no other actions in the game window are allowed to be performed
 
+	if (action.name() == "LeftClick" && action.type() == "START")
+	{
+		for (auto e : _entities.getEntities())
+		{
+			auto& eBB = e->getComponent<CBoundingBox>();
+			auto& cT = e->getComponent<CTransform>();
+
+			//if mouse pos is outside of object e on x axis
+			if (!(action.mouseX > cT.pos.x - eBB.halfSize.x && action.mouseX < cT.pos.x + eBB.halfSize.x))
+				continue;
+			
+			//if mouse pos is outside of object e on y axis
+			if (!(action.mouseY > cT.pos.y - eBB.halfSize.y && action.mouseY < cT.pos.y + eBB.halfSize.y))
+				continue;
+
+			//if mouse is within the object
+			selectedEntity = e;
+
+			for (auto obj : _entities.getEntities())
+			{
+				obj->getComponent<CBoundingBox>().physical = 1;
+			}
+			e->getComponent<CBoundingBox>().physical = 0;
+		}
+	}
 }
 
 
