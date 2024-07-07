@@ -22,6 +22,10 @@ void PLevelEditor::init()
 	registerAction(sf::Mouse::Middle + mouseButtonOFFSET, "MiddleClick");
 	registerAction(mouseWheelOFFSET, "MouseWheel");
 
+	//init the view
+	_view.setCenter((float)_game->window().getSize().x / 2, (float)_game->window().getSize().y / 2);
+	_view.setSize(sf::Vector2f(_game->window().getSize()));
+
 	//initialize a list of available textures in _textureData
 	_textureData.texturePath = "./GameFolder/Assets/Textures/";
 	std::string fileName;
@@ -36,6 +40,7 @@ void PLevelEditor::init()
 
 	readLevelCfgF("./cfgTemp.txt");
 
+
 	//initialize _selectedTexture to first element in textureNames for the sprite picker
 	_selectedTexture = _textureData.textureNames[0];
 }
@@ -44,8 +49,20 @@ void PLevelEditor::init()
 
 void PLevelEditor::update()
 {
-	_view.reset(sf::FloatRect(0, 0, 1280, 720));
-	_game->window().setView(_view);
+	/*_view.reset(sf::FloatRect(0, 0, 1280, 720));
+	_game->window().setView(_view);*/
+
+	//panning functionality
+	if (_tagMenu.panningFlag)
+	{
+		sf::Vector2f newPos(_game->window().mapPixelToCoords(sf::Mouse::getPosition(_game->window())));
+
+		_view.move(_panningPixelPos - newPos);
+		_game->window().setView(_view);
+		
+		_panningPixelPos = _game->window().mapPixelToCoords(sf::Mouse::getPosition(_game->window()));
+	}
+
 	_entities.Update();
 	ImGui::SFML::Update(_game->window(), _deltaClock.restart());
 
@@ -55,10 +72,7 @@ void PLevelEditor::update()
 
 void PLevelEditor::sDoAction(Action action)
 {
-	// user input actions within the texture window
-	// if the texture window is on, no other actions in the game window are allowed to be performed
-
-	if (action.name() == "LeftClick" && action.type() == "START")
+	if (action.name() == "LeftClick" && action.type() == "START" && !ImGui::GetIO().WantCaptureMouse)
 	{
 		for (auto e : _entities.getEntities())
 		{
@@ -83,6 +97,31 @@ void PLevelEditor::sDoAction(Action action)
 			e->getComponent<CBoundingBox>().physical = 0;
 		}
 	}
+
+	if (action.name() == "MouseWheel" && !ImGui::GetIO().WantCaptureMouse)
+	{
+		if(action.mouseWheelDelta != 0)
+		{
+			float zoom = action.mouseWheelDelta > 0 ? 0.9f : 10.0f/9.0f;
+
+			const sf::Vector2f beforeCoord{ _game->window().mapPixelToCoords(sf::Vector2i(action.mouseX, action.mouseY)) };
+			_view.zoom(zoom);
+			_game->window().setView(_view);
+			const sf::Vector2f afterCoord{ _game->window().mapPixelToCoords(sf::Vector2i(action.mouseX, action.mouseY)) };
+			_view.move(beforeCoord - afterCoord);
+			_game->window().setView(_view);
+		}
+	}
+	
+	if (action.name() == "MiddleClick" && action.type() == "START" && !ImGui::GetIO().WantCaptureMouse)
+	{
+		_panningPixelPos = sf::Vector2f(_game->window().mapPixelToCoords(sf::Vector2i(action.mouseX, action.mouseY)));
+		_tagMenu.panningFlag = true;
+	}
+	if (action.name() == "MiddleClick" && action.type() == "END")
+	{
+		_tagMenu.panningFlag = false;
+	}
 }
 
 
@@ -99,6 +138,8 @@ void PLevelEditor::sRender()
 {
 	_game->window().clear(_imGuiVars.background);
 	gridToggle(64, false);
+
+	_game->window().setView(_view);
 
 	//A VERY quick rendering scheme for testing, needs to change
 	for (auto& e : _entities.getEntities())

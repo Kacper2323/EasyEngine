@@ -60,6 +60,7 @@ This section contains all of ImGui menus and specific data they use.
 //////////////////////////////////////////////////////////////////////////
 
 private:
+
 	struct ImGuiVars
 	{
 		sf::Color background = sf::Color(137, 207, 240, 255);
@@ -79,7 +80,9 @@ private:
 		bool showMakeSpriteWindow = false;
 		bool showListOfEntities = false;
 		bool showEntityEditWindow = false;
+		bool panningFlag = false;
 	} _tagMenu;
+	sf::Vector2f _panningPixelPos;
 
 	//////////////////////////////////////////////////
 	/*
