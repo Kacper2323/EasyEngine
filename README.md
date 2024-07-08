@@ -12,8 +12,12 @@ The engine is build with C++20 and SFML and uses ECS design pattern. The core en
 - [x] core engine features
 - [x] basic level editor
 - [ ] capable editor (for static elements)
+- [ ] config file management class
+- [ ] particle system
+- [ ] better physics
+- [ ] in game windowing system
 - [ ] more capable editor (dynamic elements, animations etc.)
-- [ ] ability to add premade systems
+- [ ] ability to add premade systems to scenes
 
 ## TODO TILL NEXT MILESTONE
 
@@ -21,11 +25,10 @@ The engine is build with C++20 and SFML and uses ECS design pattern. The core en
 - [x] edit sprites in the editor
 - [x] save/read the level using a config file
 - [ ] save/read created sprites using a config file
-- [x] control over the view in editor
+- [x] control over the view in the editor
 - [x] make the UI more structured
-- [ ] intuitive mouse controls in the editor
+- [x] intuitive mouse controls in the editor
 - [ ] creating new scenes in the editor
-- [ ] ability to edit all currently implemented components in the editor
 
 ## Plans for the future
 - easy to add premade systems (pathfinding for enemies, spawners etc.)
