@@ -79,15 +79,21 @@ void PLevelEditor::sDoAction(Action action)
 			auto& eBB = e->getComponent<CBoundingBox>();
 			auto& cT = e->getComponent<CTransform>();
 
-			//if mouse pos is outside of object e on x axis
-			if (!(action.mouseX > cT.pos.x - eBB.halfSize.x && action.mouseX < cT.pos.x + eBB.halfSize.x))
+			//get the position of the mouse on the screen
+			sf::Vector2i mousePos(action.mouseX, action.mouseY);
+
+			//map the position in the world coordinates (the screen can show zoomed in or moved view)
+			sf::Vector2f pixelPos(_game->window().mapPixelToCoords(mousePos));
+
+			//if pixel pos outside of object e on x axis
+			if (!(pixelPos.x > cT.pos.x - eBB.halfSize.x && pixelPos.x < cT.pos.x + eBB.halfSize.x))
 				continue;
 			
-			//if mouse pos is outside of object e on y axis
-			if (!(action.mouseY > cT.pos.y - eBB.halfSize.y && action.mouseY < cT.pos.y + eBB.halfSize.y))
+			//if pixel pos is outside of object e on y axis
+			if (!(pixelPos.y > cT.pos.y - eBB.halfSize.y && pixelPos.y < cT.pos.y + eBB.halfSize.y))
 				continue;
 
-			//if mouse is within the object
+			//if pixel pos is within the object
 			selectedEntity = e;
 
 			for (auto obj : _entities.getEntities())
