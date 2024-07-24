@@ -82,6 +82,7 @@ class CBoundingBox : public Component
 public:
 	Vec2 size = { 0.0f, 0.0f };
 	Vec2 halfSize = { 0.0f, 0.0f };
+	bool selected = false; //used by level editor for entity selection
 	bool physical = true;
 
 	CBoundingBox() {};

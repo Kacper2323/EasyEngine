@@ -122,5 +122,6 @@ private:
 	Allows to edit selected entities' components
 	*/
 	void imGuiEditEntity();
+	char _newEntityTag[20] = {""};
 
 };

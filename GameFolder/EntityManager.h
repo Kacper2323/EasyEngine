@@ -49,7 +49,7 @@ public:
 
 	/*
 	Get entities with a certain tag.
-	/param tag: tag of the entities
+	\param tag: tag of the entities
 	\return vector of shared pointers to entities with a tag
 	*/
 	EntityVec& getEntities(const std::string& tag);

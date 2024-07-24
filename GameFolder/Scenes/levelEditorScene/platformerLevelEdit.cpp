@@ -93,14 +93,13 @@ void PLevelEditor::sDoAction(Action action)
 			if (!(pixelPos.y > cT.pos.y - eBB.halfSize.y && pixelPos.y < cT.pos.y + eBB.halfSize.y))
 				continue;
 
+			if(selectedEntity != nullptr)
+				selectedEntity->getComponent<CBoundingBox>().selected = 0;
+
 			//if pixel pos is within the object
 			selectedEntity = e;
 
-			for (auto obj : _entities.getEntities())
-			{
-				obj->getComponent<CBoundingBox>().physical = 1;
-			}
-			e->getComponent<CBoundingBox>().physical = 0;
+			selectedEntity->getComponent<CBoundingBox>().selected = 1;
 		}
 	}
 
@@ -287,7 +286,7 @@ void PLevelEditor::sBBRender()
 			bb.setPosition(bbPos.x, bbPos.y);
 			bb.setOrigin(bbSize.x / 2, bbSize.y / 2);
 			bb.setFillColor(sf::Color::Transparent);
-			if (e->getComponent<CBoundingBox>().physical)
+			if (!e->getComponent<CBoundingBox>().selected)
 				bb.setOutlineColor(sf::Color::Red);
 			else
 				bb.setOutlineColor(sf::Color::Cyan);
@@ -388,9 +387,9 @@ void PLevelEditor::imGuiListEntities()
 							selectedEntity = e;
 							for (auto obj : _entities.getEntities())
 							{
-								obj->getComponent<CBoundingBox>().physical = 1;
+								obj->getComponent<CBoundingBox>().selected = 0;
 							}
-							e->getComponent<CBoundingBox>().physical = 0;
+							e->getComponent<CBoundingBox>().selected = 1;
 						}
 
 						if(isSelected)
@@ -452,14 +451,18 @@ void PLevelEditor::imGuiEditEntity()
 
 	std::shared_ptr<Entity> entity = selectedEntity;
 
-	sf::IntRect spriteSize = entity->getComponent<CSprite>().sprite.getTextureRect();
+	if (entity->getComponent<CSprite>().has)
+	{
+		sf::IntRect spriteSize = entity->getComponent<CSprite>().sprite.getTextureRect();
 
-	sf::Vector2f imageSize = spriteResize(spriteSize, 100);
+		sf::Vector2f imageSize = spriteResize(spriteSize, 100);
 
-	ImGui::Image(selectedEntity->getComponent<CSprite>().sprite,
-				 imageSize, sf::Color::White, sf::Color::White);
+		ImGui::Image(selectedEntity->getComponent<CSprite>().sprite,
+			imageSize, sf::Color::White, sf::Color::White);
 
-	ImGui::SameLine();
+		ImGui::SameLine();
+	}
+	
 	ImGui::BeginGroup();
 	
 	if (ImGui::BeginTabBar("Components", ImGuiTabBarFlags_None))
@@ -569,6 +572,24 @@ void PLevelEditor::imGuiEditEntity()
 		ImGui::EndTabBar();
 	}
 	ImGui::EndGroup();
+
+	ImGui::Dummy(ImVec2(0, 70));
+
+	ImGui::Text("Add a new entity:");
+	ImGui::InputText("Entity_tag", _newEntityTag, 20);
+
+	if (ImGui::Button("Create"))
+	{
+		if (selectedEntity)
+			selectedEntity->getComponent<CBoundingBox>().selected = false;
+
+		selectedEntity = _entities.addEntity(std::string(_newEntityTag));
+
+		selectedEntity->addComponent<CBoundingBox>(Vec2(32, 32));
+		selectedEntity->getComponent<CBoundingBox>().selected = true;
+
+	}
+
 	ImGui::End();
 }
 
