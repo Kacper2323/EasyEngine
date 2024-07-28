@@ -34,7 +34,7 @@ void PlayScene::init()
 	_player->addComponent<CInput>();
 	_player->addComponent<CScore>(0);
 
-	std::shared_ptr<Entity> e;
+	/*std::shared_ptr<Entity> e;
 
 	e = _entities.addEntity("boundry");
 	e->addComponent<CTransform>(Vec2(16 / 2, 720 / 2), Vec2(0, 0), 0);
@@ -50,7 +50,7 @@ void PlayScene::init()
 
 	e = _entities.addEntity("boundry");
 	e->addComponent<CTransform>(Vec2(1280 / 2, 720 - 24), Vec2(0, 0), 0);
-	e->addComponent<CBoundingBox>(Vec2(1280 - 16 * 2, 48));
+	e->addComponent<CBoundingBox>(Vec2(1280 - 16 * 2, 48));*/
 
 	readLevelCfgF("./cfgTemp.txt");
 }
@@ -90,7 +90,15 @@ void PlayScene::readLevelCfgF(const std::string& path)
 				{
 					std::string textureName;
 					sf::IntRect texRect;
-					fin >> textureName >> texRect.left >> texRect.top >> texRect.width >> texRect.height;
+					fin >> textureName;
+
+					//if texture for a sprite is not loaded into the memory, load it
+					if (_game->getAssets().getTextures().find(textureName) == _game->getAssets().getTextures().end())
+					{
+						_game->getAssets().addTexture(textureName, "./GameFolder/Assets/Textures/" + textureName);
+					}
+					
+					fin >> texRect.left >> texRect.top >> texRect.width >> texRect.height;
 					entity->addComponent<CSprite>(_game->getAssets().getTexture(textureName), texRect);
 				}
 				else if (component == "END")
@@ -122,6 +130,7 @@ void PlayScene::update()
 
 	_entities.Update();
 	sLifespan();
+	//sCollision();
 	sMovement();
 	sCollision();
 	sPlayerMovement();
@@ -276,25 +285,16 @@ void PlayScene::sCollision()
 		}
 	}
 
-	for (auto e : _entities.getEntities("boundry"))
+	for (auto e : _entities.getEntities("terrain"))
 	{
 		Vec2 ov = Physics::getOverlap(e, _player);
+		Vec2 prevOv = Physics::getPrevOverlap(e, _player);
 		auto& pTransform = _player->getComponent<CTransform>();
 
 		if (ov.y >= 0 && ov.x >= 0)
 		{
-			if (ov.y > ov.x)	//if there is more overlap on y, were moving along x
-			{
-				if (pTransform.pos.x > pTransform.prevPos.x)
-				{
-					pTransform.pos.x -= ov.x;
-				}
-				else
-				{
-					pTransform.pos.x += ov.x;
-				}
-			}
-			else if (ov.y <= ov.x)
+			
+			if (prevOv.x > 0)
 			{
 				if (pTransform.pos.y > pTransform.prevPos.y)
 				{
@@ -303,6 +303,17 @@ void PlayScene::sCollision()
 				else
 				{
 					pTransform.pos.y += ov.y;
+				}
+			}
+			else if (prevOv.y > 0)	//if there is more overlap on y, were moving along x
+			{
+				if (pTransform.pos.x > pTransform.prevPos.x)
+				{
+					pTransform.pos.x -= ov.x;
+				}
+				else
+				{
+					pTransform.pos.x += ov.x;
 				}
 			}
 		}
@@ -403,7 +414,7 @@ void PlayScene::sRender()
 		}
 
 	}
-	//sBBRender();
+	sBBRender();
 
 	_game->window().draw(_pointTextBuffer);
 

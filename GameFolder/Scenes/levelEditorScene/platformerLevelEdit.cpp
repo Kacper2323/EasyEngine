@@ -1,6 +1,7 @@
 #include "platformerLevelEdit.h"
 #include "../../Utils/messages.h"
 #include "../../Utils/mathStuff.h"
+#include "../../Utils/cfgRW.h"
 #include <fstream>
 #include "../PlayScene/PlayScene.h"
 
@@ -239,31 +240,27 @@ void PLevelEditor::saveLevel(const std::string& path)
 		if (e->getComponent<CTransform>().has)
 		{
 			auto& cT = e->getComponent<CTransform>();
-			cfgFile << "CTransform " << cT.pos.x << " " << cT.pos.y << " ";
-			cfgFile << cT.velocity.x << " " << cT.velocity.y << " " << cT.angle << std::endl;
+			cfgFile << CFG::formatComponent(cT);
 		}
 
 		if (e->getComponent<CBoundingBox>().has)
 		{
 			auto& cBB = e->getComponent<CBoundingBox>();
-			cfgFile << "CBoundingBox " << cBB.size.x << " " << cBB.size.y << std::endl;
+			cfgFile << CFG::formatComponent(cBB);
 		}
 
 		if (e->getComponent<CSprite>().has)
 		{
 			auto& cS = e->getComponent<CSprite>();
 			std::string textureName;
-			cfgFile << "CSprite ";
 			for (auto& [k, v] : _game->getAssets().getTextures())
 			{
 				if (cS.sprite.getTexture() == &v)
 				{
-					cfgFile << k << " ";
+					cfgFile << CFG::formatComponent(cS, k);
+					break;
 				}
 			}
-			sf::IntRect texRect = cS.sprite.getTextureRect();
-			cfgFile << texRect.left << " " << texRect.top << " ";
-			cfgFile << texRect.width << " " << texRect.height << std::endl;
 		}
 
 		cfgFile << "END" << std::endl;
@@ -777,7 +774,15 @@ void PLevelEditor::readLevelCfgF(const std::string& path)
 					std::string textureName;
 					sf::IntRect texRect;
 
-					fin >> textureName >> texRect.left >> texRect.top >> texRect.width >> texRect.height;
+					fin >> textureName;
+
+					//if texture for a sprite is not loaded into the memory, load it
+					if (_game->getAssets().getTextures().find(textureName) == _game->getAssets().getTextures().end())
+					{
+						_game->getAssets().addTexture(textureName, _textureData.texturePath + textureName);
+					}
+						
+					fin >> texRect.left >> texRect.top >> texRect.width >> texRect.height;
 
 					entity->addComponent<CSprite>(_game->getAssets().getTexture(textureName), texRect);
 				}

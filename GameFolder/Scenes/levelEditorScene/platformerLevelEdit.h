@@ -92,12 +92,12 @@ private:
 	void saveSprite(sf::Sprite& sprite);
 
 	void imGuiMakeSprite();
-	Sprites _sprites;
-	sf::Sprite _selectedSprite;
-	sf::IntRect _spriteRect;
-	char _spriteNameBuffer[50] = {""};
-	std::string _selectedTexture;
-	std::string _selectedSpriteInMap;
+	Sprites _sprites;	//map of all created sprites with names
+	sf::Sprite _selectedSprite;	//currently selected sprite (in texture)
+	sf::IntRect _spriteRect;	//rect of currently selected sprite (within texture)
+	char _spriteNameBuffer[50] = {""};	//buffer for the sprite name (for saving)
+	std::string _selectedTexture;	//currently selected texture
+	std::string _selectedSpriteInMap;	//currently selected sprite (in sprite map)
 
 	struct TextureData
 	{
@@ -113,7 +113,7 @@ private:
 	*/
 	void imGuiListEntities();
 
-	std::shared_ptr<Entity> selectedEntity = {nullptr};
+	std::shared_ptr<Entity> selectedEntity = {nullptr};	//currently selected entity
 
 
 	//////////////////////////////////////////////////
@@ -122,6 +122,8 @@ private:
 	Allows to edit selected entities' components
 	*/
 	void imGuiEditEntity();
+
+	//tag buffer for new entity (for ImGui)
 	char _newEntityTag[20] = {""};
 
 };

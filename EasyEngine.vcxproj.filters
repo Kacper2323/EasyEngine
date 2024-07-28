@@ -143,5 +143,8 @@
     <ClInclude Include="GameFolder\Physics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameFolder\Utils\cfgRW.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
