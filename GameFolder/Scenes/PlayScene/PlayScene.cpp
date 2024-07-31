@@ -34,25 +34,7 @@ void PlayScene::init()
 	_player->addComponent<CInput>();
 	_player->addComponent<CScore>(0);
 
-	/*std::shared_ptr<Entity> e;
-
-	e = _entities.addEntity("boundry");
-	e->addComponent<CTransform>(Vec2(16 / 2, 720 / 2), Vec2(0, 0), 0);
-	e->addComponent<CBoundingBox>(Vec2(16, 720));
-
-	e = _entities.addEntity("boundry");
-	e->addComponent<CTransform>(Vec2(1280 - 8, 720 / 2), Vec2(0, 0), 0);
-	e->addComponent<CBoundingBox>(Vec2(16, 720));
-
-	e = _entities.addEntity("boundry");
-	e->addComponent<CTransform>(Vec2(1280 / 2, 8), Vec2(0, 0), 0);
-	e->addComponent<CBoundingBox>(Vec2(1280 - 16 * 2, 16));
-
-	e = _entities.addEntity("boundry");
-	e->addComponent<CTransform>(Vec2(1280 / 2, 720 - 24), Vec2(0, 0), 0);
-	e->addComponent<CBoundingBox>(Vec2(1280 - 16 * 2, 48));*/
-
-	readLevelCfgF("./cfgTemp.txt");
+	readLevelCfgF("./cfgTemp.cfg");
 }
 
 

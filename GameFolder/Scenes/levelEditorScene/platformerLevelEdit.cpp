@@ -39,7 +39,7 @@ void PLevelEditor::init()
 	}
 	if (_textureData.textureNames.empty()) { return; };
 
-	readLevelCfgF("./cfgTemp.txt");
+	readLevelCfgF("./cfgTemp.cfg");
 
 
 	//initialize _selectedTexture to first element in textureNames for the sprite picker
@@ -332,7 +332,7 @@ void PLevelEditor::mainMenu()
 
 	if (ImGui::Button("Save level"))
 	{
-		saveLevel("./cfgTemp.txt");
+		saveLevel("./cfgTemp.cfg");
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Play"))
@@ -438,6 +438,25 @@ void PLevelEditor::imGuiEditEntity()
 	{
 		_tagMenu.showEntityEditWindow = false;
 	}
+
+	ImGui::Text("Add a new entity:");
+	ImGui::InputText("Entity_tag", _newEntityTag, 20);
+
+	if (ImGui::Button("Create"))
+	{
+		if (selectedEntity)
+			selectedEntity->getComponent<CBoundingBox>().selected = false;
+
+		selectedEntity = _entities.addEntity(std::string(_newEntityTag));
+
+		selectedEntity->addComponent<CBoundingBox>(Vec2(32, 32));
+		selectedEntity->getComponent<CBoundingBox>().selected = true;
+
+	}
+
+	ImGui::Dummy(ImVec2(0.0f, 5.0f));
+	ImGui::Separator();
+	ImGui::Dummy(ImVec2(0.0f, 5.0f));
 
 	if (!selectedEntity)
 	{
@@ -570,22 +589,15 @@ void PLevelEditor::imGuiEditEntity()
 	}
 	ImGui::EndGroup();
 
-	ImGui::Dummy(ImVec2(0, 70));
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
-	ImGui::Text("Add a new entity:");
-	ImGui::InputText("Entity_tag", _newEntityTag, 20);
-
-	if (ImGui::Button("Create"))
+	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
+	if (ImGui::Button("Delete!"))
 	{
-		if (selectedEntity)
-			selectedEntity->getComponent<CBoundingBox>().selected = false;
-
-		selectedEntity = _entities.addEntity(std::string(_newEntityTag));
-
-		selectedEntity->addComponent<CBoundingBox>(Vec2(32, 32));
-		selectedEntity->getComponent<CBoundingBox>().selected = true;
-
+		selectedEntity->destroy();
+		selectedEntity = nullptr;
 	}
+	ImGui::PopStyleColor();
 
 	ImGui::End();
 }

@@ -24,6 +24,7 @@ public:
 	virtual void sDoAction(Action action) override;
 	virtual void sRender() override;
 
+private:
 	/*
 	Initializes the level.
 	Reads all textures in the Textures folder.
@@ -58,8 +59,6 @@ IMGUI INTERFACE
 This section contains all of ImGui menus and specific data they use.
 */
 //////////////////////////////////////////////////////////////////////////
-
-private:
 
 	struct ImGuiVars
 	{

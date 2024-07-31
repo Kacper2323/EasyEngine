@@ -19,7 +19,6 @@ void GameEngine::init(const std::string& path)
 	_assets.addTexture("Jump.png", "./GameFolder/Assets/Textures/Jump.png");
 	_assets.addTexture("Fall.png", "./GameFolder/Assets/Textures/Fall.png");
 	_assets.addTexture("saw38.png", "./GameFolder/Assets/Textures/saw38.png");
-	_assets.addTexture("terrain.png", "./GameFolder/Assets/Textures/terrain.png");
 	_assets.addTexture("Apple.png", "./GameFolder/Assets/Textures/Apple.png");
 	_assets.addTexture("hit.png", "./GameFolder/Assets/Textures/hit.png");
 
