@@ -1,7 +1,7 @@
 #include "platformerLevelEdit.h"
 #include "../../Utils/messages.h"
 #include "../../Utils/mathStuff.h"
-#include "../../Utils/cfgRW.h"
+#include "../../Utils/IOData.h"
 #include <fstream>
 #include "../PlayScene/PlayScene.h"
 
@@ -29,19 +29,12 @@ void PLevelEditor::init()
 
 	//initialize a list of available textures in _textureData
 	_textureData.texturePath = "./GameFolder/Assets/Textures/";
-	std::string fileName;
-	for(const auto& entry : std::filesystem::directory_iterator(_textureData.texturePath))
-	{
-		fileName = entry.path().filename().string();
 
-		std::cout << fileName << std::endl;
-		_textureData.textureNames.push_back(fileName);
-	}
+	_textureData.textureNames = IO::listFiles(_textureData.texturePath);
 	if (_textureData.textureNames.empty()) { return; };
 
 	readLevelCfgF("./cfgTemp.cfg");
-
-
+	
 	//initialize _selectedTexture to first element in textureNames for the sprite picker
 	_selectedTexture = _textureData.textureNames[0];
 }
@@ -240,13 +233,13 @@ void PLevelEditor::saveLevel(const std::string& path)
 		if (e->getComponent<CTransform>().has)
 		{
 			auto& cT = e->getComponent<CTransform>();
-			cfgFile << CFG::formatComponent(cT);
+			cfgFile << IO::formatComponent(cT);
 		}
 
 		if (e->getComponent<CBoundingBox>().has)
 		{
 			auto& cBB = e->getComponent<CBoundingBox>();
-			cfgFile << CFG::formatComponent(cBB);
+			cfgFile << IO::formatComponent(cBB);
 		}
 
 		if (e->getComponent<CSprite>().has)
@@ -257,7 +250,7 @@ void PLevelEditor::saveLevel(const std::string& path)
 			{
 				if (cS.sprite.getTexture() == &v)
 				{
-					cfgFile << CFG::formatComponent(cS, k);
+					cfgFile << IO::formatComponent(cS, k);
 					break;
 				}
 			}

@@ -3,9 +3,24 @@
 #include "../Component.hpp"
 #include "../SceneABS.h"
 #include <string>
+#include <vector>
+#include <filesystem>
 
-namespace CFG
+namespace IO
 {
+
+	inline const std::vector<std::string> listFiles(const std::string& path)
+	{
+		std::string filename;
+		std::vector<std::string> fileNames;
+		for (const auto& entry : std::filesystem::directory_iterator(path))
+		{
+			filename = entry.path().filename().string();
+
+			fileNames.push_back(filename);
+		}
+		return fileNames;
+	}
 
 	inline const std::string formatComponent(CTransform& cT)
 	{
@@ -44,4 +59,5 @@ namespace CFG
 
 		return cSprite;
 	}
+
 }
