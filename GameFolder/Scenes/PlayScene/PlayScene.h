@@ -1,5 +1,7 @@
 #pragma once
 
+#include <raylib.h>
+
 #include "../../SceneABS.h"
 #include "../../GameEngine.h"
 #include "../../Component.hpp"
@@ -28,9 +30,8 @@ class PlayScene : public Scene
 	std::shared_ptr<Entity> _player;
 	PlayerState _playerState = PS_IDLE_R;
 	PlayerConfig	_playerConfig;
-	sf::View _view;
-	sf::Clock _deltaClock;
-	sf::Text _pointTextBuffer;	//number of points the player has
+	Camera2D _camera;
+	std::string _pointTextBuffer;	//number of points the player has
 	bool _showMenu = false;
 
 public:

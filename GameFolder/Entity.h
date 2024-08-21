@@ -1,6 +1,7 @@
 #pragma once
-#include "Component.hpp"
 #include <tuple>
+#include <string>
+#include "Component.hpp"
 
 typedef std::tuple< CTransform,
 					CCollision,

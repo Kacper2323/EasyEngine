@@ -1,36 +1,19 @@
 #pragma once
 
+#include <map>
+#include <string>
+#include <raylib.h>
+
 #include "Animation.h"
-#include <SFML/Audio.hpp>
-
-/*
-Class for storing a sound from an sf::SoundBuffer class.
-*/
-class Sound
-{
-	sf::SoundBuffer _soundBuffer;
-
-public:
-	sf::Sound		sound;
-
-	Sound() {};
-	Sound(const sf::SoundBuffer soundBuffer)
-		:_soundBuffer(soundBuffer)
-	{
-		sound.setBuffer(_soundBuffer);
-	}
-};
-
 
 /*
 Class for storing game assets. Contains sf::Texture, Animation, Sound and sf::Font.
 */
 class Assets
 {
-	std::map<std::string, sf::Texture> _textures;
+	std::map<std::string, Texture2D> _textures;
 	std::map<std::string, Animation> _animations;
-	std::map<std::string, Sound> _sounds;
-	std::map<std::string, sf::Font> _fonts;
+	std::map<std::string, Font> _fonts;
 
 public:
 
@@ -40,13 +23,6 @@ public:
 	\param path: path to the image (.png or .jpeg)
 	*/
 	void addTexture(const std::string& name, const std::string& path);
-
-	/*
-	Add a sound to game assets.
-	\param name: name of the sound
-	\param path: path to the sound file (e.g. .mp3)
-	*/
-	void addSound(const std::string& name, const std::string& path);
 
 	/*
 	Add a font to game assets.
@@ -76,13 +52,13 @@ public:
 	\param texture: name of the texture
 	\return reference to the texture stored in the assets object
 	*/
-	sf::Texture& getTexture(const std::string& texture);
+	Texture2D& getTexture(const std::string& texture);
 
 	/*
 	Get a map of all textures with their names as keys and references as values.
 	\return [name: texture] map where 'texture' is a reference to a texture object stored in the assets object
 	*/
-	std::map<std::string, sf::Texture>& getTextures();
+	std::map<std::string, Texture2D>& getTextures();
 
 	/*
 	Get an animation with a given name.
@@ -92,16 +68,9 @@ public:
 	Animation& getAnimation(const std::string& animation);
 
 	/*
-	Get a sound with a given name.
-	\param sound: name of the sound
-	\return reference to a sound stored in assets
-	*/
-	Sound& getSound(const std::string& sound);
-
-	/*
 	Get a font with a given name.
 	\param font: name of the font
 	\return reference to a font stored in assets
 	*/
-	sf::Font& getFont(const std::string& font);
+	Font& getFont(const std::string& font);
 };

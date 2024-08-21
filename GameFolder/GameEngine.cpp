@@ -1,6 +1,5 @@
 #include "GameEngine.h"
 #include "Scenes/PlayScene/PlayScene.h"
-#include "Scenes/levelEditorScene/platformerLevelEdit.h"
 
 GameEngine::GameEngine(const std::string& path)
 {
@@ -9,10 +8,11 @@ GameEngine::GameEngine(const std::string& path)
 
 void GameEngine::init(const std::string& path)
 {
-	_window.create(sf::VideoMode(1280, 720), "GAME1", sf::Style::Titlebar | sf::Style::Close);
-	_window.setFramerateLimit(60);
+	InitWindow(1280, 720, "Game1");
+	SetConfigFlags(FLAG_MSAA_4X_HINT);
+	SetTargetFPS(60);
 
-	ImGui::SFML::Init(_window);
+	rlImGuiSetup(true);
 
 	_assets.addTexture("Idle.png", "./GameFolder/Assets/Textures/Idle.png");
 	_assets.addTexture("Run.png", "./GameFolder/Assets/Textures/Run.png");
@@ -22,10 +22,10 @@ void GameEngine::init(const std::string& path)
 	_assets.addTexture("Apple.png", "./GameFolder/Assets/Textures/Apple.png");
 	_assets.addTexture("hit.png", "./GameFolder/Assets/Textures/hit.png");
 
-	_assets.addAnimation("frogIdle", "Idle.png", 11, 3, Vec2(0, 0), Vec2(32, 40));
-	_assets.addAnimation("frogRun", "Run.png", 12, 3, Vec2(0, 0), Vec2(32, 40));
-	_assets.addAnimation("frogJump", "Jump.png", 1, 2, Vec2(0, 0), Vec2(32, 40));
-	_assets.addAnimation("frogFall", "Fall.png", 1, 2, Vec2(0, 0), Vec2(32, 40));
+	_assets.addAnimation("frogIdle", "Idle.png", 11, 3, Vec2(0, 0), Vec2(32, 32));
+	_assets.addAnimation("frogRun", "Run.png", 12, 3, Vec2(0, 0), Vec2(32, 32));
+	_assets.addAnimation("frogJump", "Jump.png", 1, 2, Vec2(0, 0), Vec2(32, 32));
+	_assets.addAnimation("frogFall", "Fall.png", 1, 2, Vec2(0, 0), Vec2(32, 32));
 	_assets.addAnimation("saw", "saw38.png", 8, 2, Vec2(0, 0), Vec2(38, 38));
 	_assets.addAnimation("Apple", "Apple.png", 17, 2, Vec2(0, 0), Vec2(32, 32));
 	_assets.addAnimation("hit", "hit.png", 7, 2, Vec2(0, 0), Vec2(32, 32));
@@ -37,7 +37,7 @@ void GameEngine::init(const std::string& path)
 
 void GameEngine::run()
 {
-	while (_running)
+	while (!WindowShouldClose())
 	{
 		update();
 
@@ -50,7 +50,9 @@ void GameEngine::run()
 			quit();
 		}
 	}
-	ImGui::SFML::Shutdown();
+
+	rlImGuiShutdown();
+	CloseWindow();
 }
 
 void GameEngine::update()
@@ -60,7 +62,7 @@ void GameEngine::update()
 
 void GameEngine::quit()
 {
-	_window.close();
+
 }
 
 void GameEngine::changeScene(const std::string& sceneName, std::shared_ptr<Scene> scene, bool endCurrent)
@@ -88,64 +90,20 @@ Assets& GameEngine::getAssets()
 	return _assets;
 }
 
-sf::RenderWindow& GameEngine::window()
-{
-	return _window;
-}
 
 void GameEngine::sUserInput()
 {
-	sf::Event event;
-	while (_window.pollEvent(event))
+
+	for (auto [key, action] : currentScene()->getActionMap())
 	{
-		ImGui::SFML::ProcessEvent(event);
-		if (event.type == sf::Event::Closed)
+		if (IsKeyPressed(key))
 		{
-			_running = false;
+			currentScene()->doAction(Action(action, "START"));
 		}
 
-		if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased)
+		if (IsKeyReleased(key))
 		{
-			if (currentScene()->getActionMap().find(event.key.code) == currentScene()->getActionMap().end()) 
-			{ continue; }
-
-			const std::string actionType = (event.type == sf::Event::KeyPressed) ? "START" : "END";
-
-			currentScene()->doAction(Action(currentScene()->getActionMap().at(event.key.code), actionType));
-		}
-
-		if (event.type == sf::Event::MouseButtonPressed || event.type == sf::Event::MouseButtonReleased)
-		{
-			if (currentScene()->getActionMap().find(event.key.code + mouseButtonOFFSET) == currentScene()->getActionMap().end())
-			{
-				continue;
-			}
-
-			const std::string actionType = (event.type == sf::Event::MouseButtonPressed) ? "START" : "END";
-
-			Action action(Action(currentScene()->getActionMap().at(event.mouseButton.button + mouseButtonOFFSET), actionType));
-
-			action.mouseX = event.mouseButton.x;
-			action.mouseY = event.mouseButton.y;
-
-			currentScene()->doAction(action);
-		}
-		
-		if (event.type == sf::Event::MouseWheelMoved)
-		{
-			if (currentScene()->getActionMap().find(mouseWheelOFFSET) == currentScene()->getActionMap().end())
-			{
-				continue;
-			}
-
-			Action action(Action(currentScene()->getActionMap().at(mouseWheelOFFSET), "START"));
-
-			action.mouseX = event.mouseWheel.x;
-			action.mouseY = event.mouseWheel.y;
-			action.mouseWheelDelta = event.mouseWheel.delta;
-
-
-			currentScene()->doAction(action);
+			currentScene()->doAction(Action(action, "END"));
 		}
 	}
 }

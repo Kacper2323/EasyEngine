@@ -3,7 +3,7 @@
 Animation::Animation() {};
 
 Animation::Animation(const std::string& name,
-					const sf::Texture& t,
+					const Texture2D& t,
 					int frameCount,
 					int speed,
 					const Vec2& offset,
@@ -14,9 +14,8 @@ Animation::Animation(const std::string& name,
 	, _offset(offset)
 	, _size(size)
 {
-	_sprite.setTexture(t);
-	_sprite.setOrigin(_size.x / 2.0f, _size.y / 2.0f);
-	_sprite.setTextureRect(sf::IntRect(_offset.x, _offset.y, _size.x, _size.y));
+	Rectangle rect = { _offset.x, _offset.y, _size.x, _size.y };
+	_sprite = Sprite(t, rect);
 }
 
 void Animation::onEnd()
@@ -33,7 +32,9 @@ void Animation::update()
 	int posX = _offset.x + (_animFrame * _size.x);
 	int posY = _offset.y;
 
-	_sprite.setTextureRect(sf::IntRect(posX, posY, _size.x, _size.y));
+	Rectangle rect = { posX, posY, _size.x, _size.y };
+
+	_sprite.textureRect = rect;
 
 	if (_currentFrame == _frameCount*_speed-1) { 
 		onEnd(); }
@@ -55,7 +56,7 @@ const Vec2& Animation::getSize() const
 	return _size;
 }
 
-sf::Sprite& Animation::getSprite()
+Sprite Animation::getSprite()
 {
 	return _sprite;
 }
@@ -68,4 +69,12 @@ const int Animation::getInterval() const
 void Animation::setInterval(int interval)
 {
 	_speed = interval;
+}
+
+void Animation::flipHorizontal(bool flip)
+{
+	if (flip)
+		horizontalFlip = -1;
+	else
+		horizontalFlip = 1;
 }

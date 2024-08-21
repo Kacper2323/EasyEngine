@@ -1,7 +1,9 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <raylib.h>
+
 #include "Vec2.h"
+
 #include "Animation.h"
 
 /*
@@ -31,27 +33,30 @@ public:
 class CSprite : public Component
 {
 public:
-	sf::Sprite sprite;
+	Texture2D texture;
+	Rectangle textureRect;
+	Vector2 origin;
 
 	CSprite() {};
 
-	CSprite(sf::Sprite& spritee)
-		:sprite(spritee)
+	CSprite(Texture2D texture)
+		:texture(texture)
 	{
-		sf::IntRect rect = spritee.getTextureRect();
-		sprite.setOrigin(rect.width / 2.0f, rect.height / 2.0f);
+		origin.x = texture.width / 2.0f;
+		origin.y = texture.height / 2.0f;
 	};
 
-	CSprite(sf::Texture& t, const sf::IntRect& rect)
+	CSprite(const Texture2D& texture, const Rectangle& rect)
+		:texture(texture), textureRect(rect)
 	{
-		sprite.setTexture(t);
-		sprite.setOrigin(rect.width / 2.0f, rect.height / 2.0f);
-		sprite.setTextureRect(rect);
+		origin.x = textureRect.width / 2.0f;
+		origin.y = textureRect.height / 2.0f;
 	}
 };
 
 class CAnimation : public Component
 {
+
 public:
 	Animation animation;
 
@@ -59,6 +64,7 @@ public:
 	CAnimation(Animation& anim)
 		:animation(anim)
 	{};
+
 };
 
 class CTransform : public Component

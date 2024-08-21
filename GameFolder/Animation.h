@@ -1,14 +1,40 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <raylib.h>
+#include <string>
+
 #include "Vec2.h"
+
+class Sprite
+{
+public:
+	Texture2D texture;
+	Rectangle textureRect;
+	Vector2 origin = {0,0};
+
+	Sprite() {};
+
+	Sprite(Texture2D texture)
+		:texture(texture)
+	{
+		origin.x = texture.width / 2.0f;
+		origin.y = texture.height / 2.0f;
+	};
+
+	Sprite(const Texture2D& texture, const Rectangle& rect)
+		:texture(texture), textureRect(rect)
+	{
+		origin.x = textureRect.width / 2.0f;
+		origin.y = textureRect.height / 2.0f;
+	}
+};
 
 /*
 Class representing an animation.
 */
 class Animation
 {
-	sf::Sprite	_sprite;
+	Sprite		_sprite;
 	int			_frameCount		= 0;			//number of frames in animation
 	int			_currentFrame	= 0;			//current frame of the animation
 	int			_speed			= 0;			//speed of animation playback
@@ -23,6 +49,10 @@ class Animation
 
 
 public:
+
+	//1 if texture is to be flipped, 0 if not
+	int horizontalFlip = 0;
+
 	Animation();
 
 	/*
@@ -34,7 +64,7 @@ public:
 	\param size: size of the animation rectangle within the texture
 	*/
 	Animation(	const std::string& name, 
-				const sf::Texture& t, 
+				const Texture2D& t, 
 				int frameCount, 
 				int speed,
 				const Vec2& offset,
@@ -67,7 +97,7 @@ public:
 	Get the animation sprite.
 	/return reference to the animation sprite
 	*/
-	sf::Sprite& getSprite();
+	Sprite getSprite();
 
 	/*
 	Get the speed of the animation.
@@ -80,4 +110,10 @@ public:
 	/param interval: number of game frames between each frame of animation
 	*/
 	void setInterval(int interval);
+
+	/*
+	Set which way the sprite is facing.
+	/param flip: 0 if default, 1 if flipped
+	*/
+	void flipHorizontal(bool flip);
 };

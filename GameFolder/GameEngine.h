@@ -1,8 +1,9 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include "imgui.h"
-#include "imgui-SFML.h"
 
+#include <map>
+
+#include "imgui.h"
+#include "rlImGui.h"
 #include "SceneABS.h"
 #include "Assets.h"
 
@@ -20,7 +21,6 @@ class GameEngine
 	std::string						_currentScene;
 	Assets							_assets;
 	bool							_running = true;
-	sf::RenderWindow				_window;
 
 public:
 
@@ -71,12 +71,6 @@ public:
 	\return reference to Asset type object containing global game assets
 	*/
 	Assets& getAssets();
-
-	/*
-	Get the game window.
-	\return const reference to the window
-	*/
-	sf::RenderWindow& window();
 
 	/*
 	A user input system.

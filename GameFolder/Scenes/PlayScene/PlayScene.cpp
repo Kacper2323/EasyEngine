@@ -1,7 +1,6 @@
 #include "PlayScene.h"
 #include "../../Physics.h"
 #include <fstream>
-#include "../levelEditorScene/platformerLevelEdit.h"
 
 PlayScene::PlayScene() {};
 
@@ -14,23 +13,17 @@ PlayScene::PlayScene(GameEngine* game_ptr)
 
 void PlayScene::init()
 {
-	_pointTextBuffer.setFont(_game->getAssets().getFont("OpenSans.ttf"));
-	_pointTextBuffer.setStyle(sf::Text::Bold);
-	_pointTextBuffer.setCharacterSize(30);
-	_pointTextBuffer.setFillColor(sf::Color::White);
-	_pointTextBuffer.setOutlineThickness(1);
-	_pointTextBuffer.setOutlineColor(sf::Color::Black);
-
-	registerAction(sf::Keyboard::A, "mvLeft");
-	registerAction(sf::Keyboard::D, "mvRight");
-	registerAction(sf::Keyboard::Space, "mvJump");
-	registerAction(sf::Keyboard::Escape, "menu");
+	SetExitKey(KEY_NULL);
+	registerAction(KEY_A, "mvLeft");
+	registerAction(KEY_D, "mvRight");
+	registerAction(KEY_SPACE, "mvJump");
+	registerAction(KEY_ESCAPE, "menu");
 
 	_player = _entities.addEntity("frog");
 	_player->addComponent<CTransform>(Vec2(600, 600), Vec2(0, 0), 0);
 	_player->addComponent<CGravity>(0.85);
 	_player->addComponent<CAnimation>(_game->getAssets().getAnimation("frogIdle"));
-	_player->addComponent<CBoundingBox>(Vec2(20, 24));
+	_player->addComponent<CBoundingBox>(Vec2(20, 32));
 	_player->addComponent<CInput>();
 	_player->addComponent<CScore>(0);
 
@@ -71,7 +64,7 @@ void PlayScene::readLevelCfgF(const std::string& path)
 				else if (component == "CSprite")
 				{
 					std::string textureName;
-					sf::IntRect texRect;
+					Rectangle texRect;
 					fin >> textureName;
 
 					//if texture for a sprite is not loaded into the memory, load it
@@ -80,7 +73,7 @@ void PlayScene::readLevelCfgF(const std::string& path)
 						_game->getAssets().addTexture(textureName, "./GameFolder/Assets/Textures/" + textureName);
 					}
 					
-					fin >> texRect.left >> texRect.top >> texRect.width >> texRect.height;
+					fin >> texRect.x >> texRect.y >> texRect.width >> texRect.height;
 					entity->addComponent<CSprite>(_game->getAssets().getTexture(textureName), texRect);
 				}
 				else if (component == "END")
@@ -101,24 +94,16 @@ void PlayScene::readLevelCfgF(const std::string& path)
 
 void PlayScene::update()
 {
-	ImGui::SFML::Update(_game->window(), _deltaClock.restart());
-
-	if (_showMenu)
-	{
-		menu();
-	}
-
 	if (_paused) { return; };
 
 	_entities.Update();
 	sLifespan();
-	//sCollision();
 	sMovement();
 	sCollision();
 	sPlayerMovement();
 	sSawSpawner();
 	sAppleSpawner();
-	_pointTextBuffer.setString(std::to_string(_player->getComponent<CScore>().score));
+	_pointTextBuffer = _player->getComponent<CScore>().score;
 
 	_currentFrame++;
 }
@@ -131,7 +116,7 @@ void PlayScene::menu()
 
 	if (ImGui::Button("Edit level"))
 	{
-		_game->changeScene("LevelEditor", std::make_shared<PLevelEditor>(_game), 1);
+		//_game->changeScene("LevelEditor", std::make_shared<PLevelEditor>(_game), 1);
 	}
 
 	ImGui::End();
@@ -179,9 +164,6 @@ void PlayScene::sBBRender()
 {
 	//Must be called between window.clear() and window.display() in a routine
 
-	sf::Color translucent(0, 0, 0, 0);
-	sf::Color redOutline(255, 0, 0, 255);
-
 	for (std::shared_ptr<Entity> e : _entities.getEntities())
 	{
 		if (e->getComponent<CBoundingBox>().has)
@@ -189,13 +171,7 @@ void PlayScene::sBBRender()
 			Vec2 bbSize = e->getComponent<CBoundingBox>().size;
 			Vec2 bbPos = e->getComponent<CTransform>().pos;
 
-			sf::RectangleShape bb(sf::Vector2f(bbSize.x, bbSize.y));
-			bb.setPosition(bbPos.x, bbPos.y);
-			bb.setOrigin(bbSize.x / 2, bbSize.y / 2);
-			bb.setFillColor(translucent);
-			bb.setOutlineColor(redOutline);
-			bb.setOutlineThickness(1);
-			_game->window().draw(bb);
+			DrawRectangleLines(bbPos.x - bbSize.x/2, bbPos.y - bbSize.y/2, bbSize.x, bbSize.y, RED);
 		}
 	}
 }
@@ -231,41 +207,6 @@ void PlayScene::sMovement()
 
 void PlayScene::sCollision()
 {
-	for (std::shared_ptr<Entity> e : _entities.getEntities("saw"))
-	{
-		Vec2 ov = Physics::getOverlap(e, _player);
-
-		if (ov.y > 0 && ov.x > 0)
-		{
-			e->destroy();
-			_player->addComponent<CAnimation>(_game->getAssets().getAnimation("hit"));
-			_player->getComponent<CScore>().score = 0;
-			_showMenu = true;
-			_paused = _showMenu;
-		}
-	}
-	if (_player->getComponent<CAnimation>().animation.hasEnded() && _player->getComponent<CAnimation>().animation.getName() == "hit")
-	{
-		_player->getComponent<CTransform>().pos = Vec2(600, 600);
-		
-		for (auto e : _entities.getEntities("saw"))
-		{
-			e->destroy();
-		}
-	}
-
-
-
-	for (std::shared_ptr<Entity> e : _entities.getEntities("Apple"))
-	{
-		Vec2 ov = Physics::getOverlap(e, _player);
-
-		if (ov.y > 0 && ov.x > 0)
-		{
-			e->destroy();
-			_player->getComponent<CScore>().score++;
-		}
-	}
 
 	for (auto e : _entities.getEntities("terrain"))
 	{
@@ -333,47 +274,90 @@ void PlayScene::sCollision()
 			}
 		}
 	}
+
+	for (std::shared_ptr<Entity> e : _entities.getEntities("saw"))
+	{
+		Vec2 ov = Physics::getOverlap(e, _player);
+
+		if (ov.y > 0 && ov.x > 0)
+		{
+			e->destroy();
+			_player->addComponent<CAnimation>(_game->getAssets().getAnimation("hit"));
+			_player->getComponent<CScore>().score = 0;
+			_showMenu = true;
+			_paused = _showMenu;
+		}
+	}
+	if (_player->getComponent<CAnimation>().animation.hasEnded() && _player->getComponent<CAnimation>().animation.getName() == "hit")
+	{
+		_player->getComponent<CTransform>().pos = Vec2(600, 600);
+		
+		for (auto e : _entities.getEntities("saw"))
+		{
+			e->destroy();
+		}
+	}
+
+
+
+	for (std::shared_ptr<Entity> e : _entities.getEntities("Apple"))
+	{
+		Vec2 ov = Physics::getOverlap(e, _player);
+
+		if (ov.y > 0 && ov.x > 0)
+		{
+			e->destroy();
+			_player->getComponent<CScore>().score++;
+		}
+	}
 }
 
 void PlayScene::sViewSet()
 {
-	sf::Vector2u windowSize = _game->window().getSize();
-	_view.setSize(windowSize.x / 2, windowSize.y / 2);
-
+	_camera.zoom = 2;
+	_camera.offset = { 0,0 };
 	Vec2 pPos = _player->getComponent<CTransform>().pos;
+	_camera.target = { pPos.x, pPos.y };
+	_camera.rotation = 0;
+
+
 	float viewCenterX = pPos.x;
 	float viewCenterY = pPos.y;
 
-	if (pPos.y - windowSize.y/4 < 0)
+	if (pPos.y - GetScreenHeight()/4.0 < 0)
 	{
-		viewCenterY = windowSize.y / 4;
+		viewCenterY = GetScreenHeight() / 4.0;
 	}
-	else if (pPos.y + windowSize.y/4 > windowSize.y)
+	else if (pPos.y + GetScreenHeight()/4.0 > GetScreenHeight())
 	{
-		viewCenterY = windowSize.y - windowSize.y / 4;
+		viewCenterY = GetScreenHeight() - GetScreenHeight() / 4.0;
 	}
 
-	if (pPos.x - windowSize.x/ 4 < 0)
+	if (pPos.x - GetScreenWidth()/ 4 < 0)
 	{
-		viewCenterX = windowSize.x / 4;
+		viewCenterX = GetScreenWidth() / 4.0;
 	}
-	else if (pPos.x + windowSize.x / 4 > windowSize.x)
+	else if (pPos.x + GetScreenWidth() / 4 > GetScreenWidth())
 	{
-		viewCenterX = windowSize.x - windowSize.x / 4;
+		viewCenterX = GetScreenWidth() - GetScreenWidth() / 4.0;
 	}
-	
-	_pointTextBuffer.setPosition(viewCenterX - windowSize.x/4 + 5, viewCenterY - windowSize.y/4-5);
 
-	_view.setCenter(viewCenterX, viewCenterY);
-
-	_game->window().setView(_view);
+	_camera.offset.x = viewCenterX;
+	_camera.offset.y = viewCenterY;
 }
 
 void PlayScene::sRender()
 {
-	_game->window().clear(sf::Color(137, 207, 240, 255));
+
+	Color color = { 137, 207, 240, 255 };
+
+	
+	BeginDrawing();
+	ClearBackground(color);
 
 	sViewSet();
+
+	BeginMode2D(_camera);
 
 	for (std::shared_ptr<Entity> e : _entities.getEntities())
 	{
@@ -384,24 +368,47 @@ void PlayScene::sRender()
 		{
 			auto& eAnim = e->getComponent<CAnimation>();
 
-			eAnim.animation.getSprite().setPosition(e->getComponent<CTransform>().pos.x, e->getComponent<CTransform>().pos.y);
+			Rectangle position = eAnim.animation.getSprite().textureRect;
+			position.x = e->getComponent<CTransform>().pos.x;
+			position.y = e->getComponent<CTransform>().pos.y;
 
 			eAnim.animation.update();
-			_game->window().draw(eAnim.animation.getSprite());
+
+			Sprite sprite = eAnim.animation.getSprite();
+
+			if (eAnim.animation.horizontalFlip)
+			{
+				sprite.textureRect.width *= -1;
+			}
+
+			DrawTexturePro(sprite.texture, sprite.textureRect, position, sprite.origin, 0, RAYWHITE);
 		}
 		else if (e->getComponent<CSprite>().has)
 		{
-			e->getComponent<CSprite>().sprite.setPosition(e->getComponent<CTransform>().pos.x, e->getComponent<CTransform>().pos.y);
-			_game->window().draw(e->getComponent<CSprite>().sprite);
+
+			Rectangle position = e->getComponent<CSprite>().textureRect;
+			position.x = e->getComponent<CTransform>().pos.x;
+			position.y = e->getComponent<CTransform>().pos.y;
+
+			DrawTexturePro(e->getComponent<CSprite>().texture, e->getComponent<CSprite>().textureRect, position,
+				e->getComponent<CSprite>().origin, 0, RAYWHITE);
 		}
 
 	}
 	sBBRender();
+	
+	EndMode2D();
 
-	_game->window().draw(_pointTextBuffer);
+	rlImGuiBegin();
 
-	ImGui::SFML::Render(_game->window());
-	_game->window().display();
+	if (_showMenu)
+	{
+		menu();
+	}
+
+	rlImGuiEnd();
+
+	EndDrawing();
 }
 
 void PlayScene::sSawSpawner()
@@ -477,7 +484,8 @@ void PlayScene::sPlayerMovement()
 			cAnim = _player->addComponent<CAnimation>(_game->getAssets().getAnimation("frogJump"));
 			if (_playerState == PS_IDLE_L || _playerState == PS_LEFT_L || _playerState == PS_LEFT_LR)
 			{
-				cAnim.animation.getSprite().setScale(-1, 1);
+				//cAnim.animation.getSprite().textureRect.width *= -1;
+				_player->getComponent<CAnimation>().animation.horizontalFlip = 1;
 			}
 		}
 		else
@@ -485,7 +493,8 @@ void PlayScene::sPlayerMovement()
 			cAnim = _player->addComponent<CAnimation>(_game->getAssets().getAnimation("frogFall"));
 			if (_playerState == PS_IDLE_L || _playerState == PS_LEFT_L || _playerState == PS_LEFT_LR)
 			{
-				cAnim.animation.getSprite().setScale(-1, 1);
+				//cAnim.animation.getSprite().setScale(-1, 1);
+				_player->getComponent<CAnimation>().animation.horizontalFlip = 1;
 			}
 		}
 	}
@@ -518,7 +527,8 @@ void PlayScene::sPlayerMovement()
 		if (cAnim.animation.hasEnded() || animCancelFlag)
 		{
 			_player->addComponent<CAnimation>(_game->getAssets().getAnimation("frogIdle"));
-			_player->getComponent<CAnimation>().animation.getSprite().setScale(-1, 1);
+			//_player->getComponent<CAnimation>().animation.getSprite().setScale(-1, 1);
+			_player->getComponent<CAnimation>().animation.horizontalFlip = 1;
 		}
 
 		animCancelFlag = false;
@@ -553,7 +563,8 @@ void PlayScene::sPlayerMovement()
 		if (cAnim.animation.hasEnded() || animCancelFlag)
 		{
 			_player->addComponent<CAnimation>(_game->getAssets().getAnimation("frogRun"));
-			_player->getComponent<CAnimation>().animation.getSprite().setScale(-1, 1);
+			//_player->getComponent<CAnimation>().animation.getSprite().textureRect.width *= -1;
+			_player->getComponent<CAnimation>().animation.horizontalFlip = 1;
 		}
 
 		animCancelFlag = false;
@@ -588,7 +599,8 @@ void PlayScene::sPlayerMovement()
 		if (cAnim.animation.hasEnded() || animCancelFlag)
 		{
 			_player->addComponent<CAnimation>(_game->getAssets().getAnimation("frogRun"));
-			_player->getComponent<CAnimation>().animation.getSprite().setScale(-1, 1);
+			//_player->getComponent<CAnimation>().animation.getSprite().setScale(-1, 1);
+			_player->getComponent<CAnimation>().animation.horizontalFlip = 1;
 		}
 
 		animCancelFlag = false;

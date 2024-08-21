@@ -33,9 +33,6 @@
     <ClCompile Include="ImGUI\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGUI\imgui-SFML.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameFolder\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -63,10 +60,7 @@
     <ClCompile Include="GameFolder\Scenes\PlayScene\PlayScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameFolder\Scenes\levelEditorScene\platformerLevelEdit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameFolder\Scenes\levelEditorScene\LevelEditorTools\textureEditWindow.cpp">
+    <ClCompile Include="imgui\rlImGui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,19 +74,10 @@
     <ClInclude Include="ImGUI\imconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImGUI\imconfig-SFML.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ImGUI\imgui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImGUI\imgui_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGUI\imgui-SFML.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGUI\imgui-SFML_export.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImGUI\imstb_rectpack.h">
@@ -128,13 +113,7 @@
     <ClInclude Include="GameFolder\Scenes\PlayScene\PlayScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameFolder\Scenes\levelEditorScene\platformerLevelEdit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameFolder\Utils\messages.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameFolder\Scenes\levelEditorScene\LevelEditorTools\textureEditWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameFolder\Utils\mathStuff.h">
@@ -144,6 +123,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameFolder\Utils\IOData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_raylib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\rlImGui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\rlImGuiColors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="raylib\include\raylib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="raylib\include\raymath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="raylib\include\rlgl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

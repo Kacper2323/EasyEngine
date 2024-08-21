@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+#include <map>
 #include "Entity.h"
 
 typedef std::vector<std::shared_ptr<Entity>> EntityVec;
