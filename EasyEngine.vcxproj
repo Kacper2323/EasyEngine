@@ -152,6 +152,7 @@
     <ClCompile Include="GameFolder\EntityManager.cpp" />
     <ClCompile Include="GameFolder\GameEngine.cpp" />
     <ClCompile Include="GameFolder\SceneABS.cpp" />
+    <ClCompile Include="GameFolder\Scenes\levelEditorScene\platformerLevelEdit.cpp" />
     <ClCompile Include="GameFolder\Scenes\PlayScene\PlayScene.cpp" />
     <ClCompile Include="GameFolder\Vec2.cpp" />
     <ClCompile Include="ImGUI\imgui.cpp" />
@@ -172,7 +173,9 @@
     <ClInclude Include="GameFolder\GameEngine.h" />
     <ClInclude Include="GameFolder\Physics.h" />
     <ClInclude Include="GameFolder\SceneABS.h" />
+    <ClInclude Include="GameFolder\Scenes\levelEditorScene\platformerLevelEdit.h" />
     <ClInclude Include="GameFolder\Scenes\PlayScene\PlayScene.h" />
+    <ClInclude Include="GameFolder\Sprite.h" />
     <ClInclude Include="GameFolder\Utils\IOData.h" />
     <ClInclude Include="GameFolder\Utils\mathStuff.h" />
     <ClInclude Include="GameFolder\Utils\messages.h" />

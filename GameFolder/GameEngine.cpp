@@ -1,5 +1,6 @@
 #include "GameEngine.h"
 #include "Scenes/PlayScene/PlayScene.h"
+#include "Scenes/levelEditorScene/platformerLevelEdit.h"
 
 GameEngine::GameEngine(const std::string& path)
 {
@@ -12,6 +13,7 @@ void GameEngine::init(const std::string& path)
 	SetConfigFlags(FLAG_MSAA_4X_HINT);
 	SetTargetFPS(60);
 
+	SetExitKey(KEY_NULL);
 	rlImGuiSetup(true);
 
 	_assets.addTexture("Idle.png", "./GameFolder/Assets/Textures/Idle.png");
@@ -32,7 +34,7 @@ void GameEngine::init(const std::string& path)
 
 	_assets.addFont("OpenSans.ttf", "./GameFolder/zOpenSans.ttf");
 
-	changeScene("PlayScene", std::make_shared<PlayScene>(this), 0);
+	changeScene("LevelEditor", std::make_shared<PLevelEditor>(this), 0);
 }
 
 void GameEngine::run()
@@ -97,13 +99,31 @@ void GameEngine::sUserInput()
 	for (auto [key, action] : currentScene()->getActionMap())
 	{
 		if (IsKeyPressed(key))
-		{
 			currentScene()->doAction(Action(action, "START"));
-		}
 
 		if (IsKeyReleased(key))
-		{
 			currentScene()->doAction(Action(action, "END"));
-		}
+
+		if (IsMouseButtonDown(key - mouseButtonOFFSET))
+			currentScene()->doAction(Action(action, "START"));
+
+		if (IsMouseButtonReleased(key - mouseButtonOFFSET))
+			currentScene()->doAction(Action(action, "END"));
+
+	}
+
+	//assignement is last, it is compared first!!!!!
+	float mMove = GetMouseWheelMove();
+
+	if (mMove != 0.0f)
+	{
+		Action mouseWheelAction("MouseWheel", "START");
+
+		MSG::TRACE(mMove);
+
+		mouseWheelAction.mouseWheelDelta = mMove * -1;
+		mouseWheelAction.mouseX = GetMouseX();
+		mouseWheelAction.mouseY = GetMouseY();
+		currentScene()->doAction(mouseWheelAction);
 	}
 }

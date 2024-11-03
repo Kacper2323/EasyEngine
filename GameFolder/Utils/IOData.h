@@ -52,10 +52,10 @@ namespace IO
 
 		cSprite += "CSprite ";
 		cSprite += textureName + " ";
-		cSprite += std::to_string(cS.sprite.getTextureRect().left) + " ";
-		cSprite += std::to_string(cS.sprite.getTextureRect().top) + " ";
-		cSprite += std::to_string(cS.sprite.getTextureRect().width) + " ";
-		cSprite += std::to_string(cS.sprite.getTextureRect().height) + "\n";
+		cSprite += std::to_string(cS.textureRect.x) + " ";
+		cSprite += std::to_string(cS.textureRect.y) + " ";
+		cSprite += std::to_string(cS.textureRect.width) + " ";
+		cSprite += std::to_string(cS.textureRect.height) + "\n";
 
 		return cSprite;
 	}

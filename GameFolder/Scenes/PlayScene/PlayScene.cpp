@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "../../Physics.h"
 #include <fstream>
+#include "../levelEditorScene/platformerLevelEdit.h"
 
 PlayScene::PlayScene() {};
 
@@ -13,7 +14,6 @@ PlayScene::PlayScene(GameEngine* game_ptr)
 
 void PlayScene::init()
 {
-	SetExitKey(KEY_NULL);
 	registerAction(KEY_A, "mvLeft");
 	registerAction(KEY_D, "mvRight");
 	registerAction(KEY_SPACE, "mvJump");
@@ -116,7 +116,7 @@ void PlayScene::menu()
 
 	if (ImGui::Button("Edit level"))
 	{
-		//_game->changeScene("LevelEditor", std::make_shared<PLevelEditor>(_game), 1);
+		_game->changeScene("LevelEditor", std::make_shared<PLevelEditor>(_game), 1);
 	}
 
 	ImGui::End();
@@ -162,8 +162,6 @@ void PlayScene::sDoAction(Action action)
 
 void PlayScene::sBBRender()
 {
-	//Must be called between window.clear() and window.display() in a routine
-
 	for (std::shared_ptr<Entity> e : _entities.getEntities())
 	{
 		if (e->getComponent<CBoundingBox>().has)

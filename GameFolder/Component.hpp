@@ -52,6 +52,10 @@ public:
 		origin.x = textureRect.width / 2.0f;
 		origin.y = textureRect.height / 2.0f;
 	}
+
+	CSprite(const Sprite& sprite)
+		:texture(sprite.texture), textureRect(sprite.textureRect), origin(sprite.origin)
+	{}
 };
 
 class CAnimation : public Component

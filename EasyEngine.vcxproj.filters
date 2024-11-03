@@ -63,6 +63,9 @@
     <ClCompile Include="imgui\rlImGui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameFolder\Scenes\levelEditorScene\platformerLevelEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameFolder\Component.hpp">
@@ -141,6 +144,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="raylib\include\rlgl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFolder\Scenes\levelEditorScene\platformerLevelEdit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFolder\Sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
