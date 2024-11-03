@@ -18,8 +18,6 @@ PLevelEditor::PLevelEditor(GameEngine* gameEnginePointer)
 void PLevelEditor::init()
 {
 
-	_camera.offset.x = GetScreenWidth() / 2;
-	_camera.offset.y = GetScreenHeight() / 2;
 
 	//register all necessary actions
 	registerAction(MOUSE_BUTTON_LEFT + mouseButtonOFFSET, "LeftClick");
@@ -28,6 +26,8 @@ void PLevelEditor::init()
 	registerAction(mouseWheelOFFSET, "MouseWheel");
 
 	//init the view
+	_camera.offset.x = GetScreenWidth() / 2;
+	_camera.offset.y = GetScreenHeight() / 2;
 	_camera.zoom = 1;
 	_camera.target.x = GetScreenWidth() / 2.0f;
 	_camera.target.y = GetScreenHeight() / 2.0f;
@@ -194,16 +194,16 @@ void PLevelEditor::sRender()
 */
 void PLevelEditor::gridToggle(int gridSize, bool alignBottomLeft)
 {
-	for (std::shared_ptr<Entity> e : _entities.getEntities())
-	{
-		if (e->getComponent<CBoundingBox>().has)
-		{
-			Vec2 bbSize = e->getComponent<CBoundingBox>().size;
-			Vec2 bbPos = e->getComponent<CTransform>().pos;
+	//for (std::shared_ptr<Entity> e : _entities.getEntities())
+	//{
+	//	if (e->getComponent<CBoundingBox>().has)
+	//	{
+	//		Vec2 bbSize = e->getComponent<CBoundingBox>().size;
+	//		Vec2 bbPos = e->getComponent<CTransform>().pos;
 
-			DrawRectangleLines(bbPos.x - bbSize.x / 2, bbPos.y - bbSize.y / 2, bbSize.x, bbSize.y, RED);
-		}
-	}
+	//		DrawRectangleLines(bbPos.x - bbSize.x / 2, bbPos.y - bbSize.y / 2, bbSize.x, bbSize.y, RED);
+	//	}
+	//}
 }
 
 void PLevelEditor::saveLevel(const std::string& path)
