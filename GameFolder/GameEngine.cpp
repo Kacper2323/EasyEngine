@@ -119,8 +119,6 @@ void GameEngine::sUserInput()
 	{
 		Action mouseWheelAction("MouseWheel", "START");
 
-		MSG::TRACE(mMove);
-
 		mouseWheelAction.mouseWheelDelta = mMove * -1;
 		mouseWheelAction.mouseX = GetMouseX();
 		mouseWheelAction.mouseY = GetMouseY();

@@ -83,7 +83,6 @@ This section contains all of ImGui menus and specific data they use.
 		bool showEntityEditWindow = false;
 		bool panningFlag = false;
 	} _tagMenu;
-	Vector2 _panningPixelPos;
 
 	//////////////////////////////////////////////////
 	/*

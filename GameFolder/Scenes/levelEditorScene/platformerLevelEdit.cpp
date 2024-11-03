@@ -48,21 +48,14 @@ void PLevelEditor::init()
 
 void PLevelEditor::update()
 {
-	/*_view.reset(sf::FloatRect(0, 0, 1280, 720));
-	_game->window().setView(_view);*/
-
 	//panning functionality
 	if (_tagMenu.panningFlag)
 	{
-		Vector2 newPos = { GetScreenToWorld2D(GetMousePosition(), _camera) };
 
-		_camera.offset.x = _camera.offset.x + (_panningPixelPos.x - newPos.x);
-		_camera.offset.y = _camera.offset.y + (_panningPixelPos.y - newPos.y);
+		Vector2 mouseDelta = GetMouseDelta();
 
-		/*_view.move(_panningPixelPos - newPos);
-		_game->window().setView(_view);*/
-		
-		_panningPixelPos = { GetScreenToWorld2D(GetMousePosition(), _camera) };
+		_camera.offset.x += mouseDelta.x;
+		_camera.offset.y += mouseDelta.y;
 	}
 
 	_entities.Update();
@@ -123,7 +116,6 @@ void PLevelEditor::sDoAction(Action action)
 	
 	if (action.name() == "MiddleClick" && action.type() == "START" && !ImGui::GetIO().WantCaptureMouse)
 	{
-		_panningPixelPos = Vector2( GetScreenToWorld2D(Vector2(action.mouseX, action.mouseY), _camera));
 		_tagMenu.panningFlag = true;
 	}
 	if (action.name() == "MiddleClick" && action.type() == "END")
