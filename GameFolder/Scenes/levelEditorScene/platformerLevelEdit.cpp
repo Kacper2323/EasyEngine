@@ -17,8 +17,6 @@ PLevelEditor::PLevelEditor(GameEngine* gameEnginePointer)
 
 void PLevelEditor::init()
 {
-
-
 	//register all necessary actions
 	registerAction(MOUSE_BUTTON_LEFT + mouseButtonOFFSET, "LeftClick");
 	registerAction(MOUSE_BUTTON_RIGHT + mouseButtonOFFSET, "RightClick");
@@ -51,7 +49,6 @@ void PLevelEditor::update()
 	//panning functionality
 	if (_tagMenu.panningFlag)
 	{
-
 		Vector2 mouseDelta = GetMouseDelta();
 
 		_camera.offset.x += mouseDelta.x;
@@ -59,7 +56,6 @@ void PLevelEditor::update()
 	}
 
 	_entities.Update();
-	
 }
 
 
@@ -108,8 +104,8 @@ void PLevelEditor::sDoAction(Action action)
 			const Vector2 afterCoord = { GetScreenToWorld2D(Vector2(action.mouseX, action.mouseY), _camera) };
 
 			//_view.move(beforeCoord - afterCoord);
-			_camera.offset.x -= (beforeCoord.x - afterCoord.x) * _camera.zoom;
-			_camera.offset.y -= (beforeCoord.y - afterCoord.y) * _camera.zoom;
+			_camera.target.x += (beforeCoord.x - afterCoord.x);
+			_camera.target.y += (beforeCoord.y - afterCoord.y);
 
 		}
 	}
@@ -258,7 +254,10 @@ void PLevelEditor::sBBRender()
 			Vec2 bbSize = e->getComponent<CBoundingBox>().size;
 			Vec2 bbPos = e->getComponent<CTransform>().pos;
 
-			DrawRectangleLines(bbPos.x - bbSize.x / 2, bbPos.y - bbSize.y / 2, bbSize.x, bbSize.y, RED);
+			if(e->getComponent<CBoundingBox>().selected)
+				DrawRectangleLines(bbPos.x - bbSize.x / 2, bbPos.y - bbSize.y / 2, bbSize.x, bbSize.y, GREEN);
+			else
+				DrawRectangleLines(bbPos.x - bbSize.x / 2, bbPos.y - bbSize.y / 2, bbSize.x, bbSize.y, RED);
 		}
 	}
 }

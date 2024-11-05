@@ -104,8 +104,13 @@ void GameEngine::sUserInput()
 		if (IsKeyReleased(key))
 			currentScene()->doAction(Action(action, "END"));
 
-		if (IsMouseButtonDown(key - mouseButtonOFFSET))
-			currentScene()->doAction(Action(action, "START"));
+		if (IsMouseButtonPressed(key - mouseButtonOFFSET))
+		{
+			Action mousePressed("LeftClick", "START");
+			mousePressed.mouseX = GetMouseX();
+			mousePressed.mouseY = GetMouseY();
+			currentScene()->doAction(mousePressed);
+		}
 
 		if (IsMouseButtonReleased(key - mouseButtonOFFSET))
 			currentScene()->doAction(Action(action, "END"));
