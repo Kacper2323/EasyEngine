@@ -9,7 +9,9 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_executable(Game main.cpp)
 
+if(MSVC)
 target_link_libraries(Game PRIVATE winmm)
+endif()
 
 add_subdirectory(raylib)
 add_subdirectory(GameFolder)

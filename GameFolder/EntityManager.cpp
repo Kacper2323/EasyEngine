@@ -1,4 +1,5 @@
 #include "EntityManager.h"
+#include <algorithm>
 
 void EntityManager::removeDeadEntities()
 {
