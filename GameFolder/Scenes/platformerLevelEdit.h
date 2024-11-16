@@ -2,10 +2,10 @@
 
 #include <raylib.h>
 
-#include "../../GameEngine.h"
-#include "../../SceneABS.h"
+#include "../GameEngine.h"
+#include "../SceneABS.h"
 #include <filesystem>
-#include "../../Utils/messages.h"
+#include "../Utils/messages.h"
 
 
 

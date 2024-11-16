@@ -1,9 +1,9 @@
 #include "platformerLevelEdit.h"
-#include "../../Utils/messages.h"
-#include "../../Utils/mathStuff.h"
-#include "../../Utils/IOData.h"
+#include "../Utils/messages.h"
+#include "../Utils/mathStuff.h"
+#include "../Utils/IOData.h"
 #include <fstream>
-#include "../PlayScene/PlayScene.h"
+#include "./PlayScene.h"
 
 PLevelEditor::PLevelEditor() {};
 
@@ -31,12 +31,12 @@ void PLevelEditor::init()
 	_camera.target.y = GetScreenHeight() / 2.0f;
 
 	//initialize a list of available textures in _textureData
-	_textureData.texturePath = "./GameFolder/Assets/Textures/";
+	_textureData.texturePath = "./../Assets/Textures/";
 
 	_textureData.textureNames = IO::listFiles(_textureData.texturePath);
 	if (_textureData.textureNames.empty()) { return; };
 
-	readLevelCfgF("./cfgTemp.cfg");
+	readLevelCfgF("../Assets/cfgFiles/cfgTemp.cfg");
 	
 	//initialize _selectedTexture to first element in textureNames for the sprite picker
 	_selectedTexture = _textureData.textureNames[0];
@@ -301,7 +301,7 @@ void PLevelEditor::mainMenu()
 
 	if (ImGui::Button("Save level"))
 	{
-		saveLevel("./cfgTemp.cfg");
+		saveLevel("../Assets/cfgFiles/cfgTemp.cfg");
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Play"))

@@ -1,6 +1,6 @@
 #include "GameEngine.h"
-#include "Scenes/PlayScene/PlayScene.h"
-#include "Scenes/levelEditorScene/platformerLevelEdit.h"
+#include "Scenes/PlayScene.h"
+#include "Scenes/platformerLevelEdit.h"
 
 GameEngine::GameEngine(const std::string& path)
 {
@@ -16,13 +16,13 @@ void GameEngine::init(const std::string& path)
 	SetExitKey(KEY_NULL);
 	rlImGuiSetup(true);
 
-	_assets.addTexture("Idle.png", "./GameFolder/Assets/Textures/Idle.png");
-	_assets.addTexture("Run.png", "./GameFolder/Assets/Textures/Run.png");
-	_assets.addTexture("Jump.png", "./GameFolder/Assets/Textures/Jump.png");
-	_assets.addTexture("Fall.png", "./GameFolder/Assets/Textures/Fall.png");
-	_assets.addTexture("saw38.png", "./GameFolder/Assets/Textures/saw38.png");
-	_assets.addTexture("Apple.png", "./GameFolder/Assets/Textures/Apple.png");
-	_assets.addTexture("hit.png", "./GameFolder/Assets/Textures/hit.png");
+	_assets.addTexture("Idle.png", "./../Assets/Textures/Idle.png");
+	_assets.addTexture("Run.png", "./../Assets/Textures/Run.png");
+	_assets.addTexture("Jump.png", "./../Assets/Textures/Jump.png");
+	_assets.addTexture("Fall.png", "./../Assets/Textures/Fall.png");
+	_assets.addTexture("saw38.png", "./../Assets/Textures/saw38.png");
+	_assets.addTexture("Apple.png", "./../Assets/Textures/Apple.png");
+	_assets.addTexture("hit.png", "./../Assets/Textures/hit.png");
 
 	_assets.addAnimation("frogIdle", "Idle.png", 11, 3, Vec2(0, 0), Vec2(32, 32));
 	_assets.addAnimation("frogRun", "Run.png", 12, 3, Vec2(0, 0), Vec2(32, 32));

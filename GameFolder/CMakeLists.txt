@@ -1,0 +1,31 @@
+set(SOURCES
+${CMAKE_CURRENT_SOURCE_DIR}/Action.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/Animation.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/Assets.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/Entity.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/EntityManager.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/GameEngine.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/SceneABS.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/Vec2.cpp
+${CMAKE_CURRENT_SOURCE_DIR}/Action.h
+${CMAKE_CURRENT_SOURCE_DIR}/Animation.h
+${CMAKE_CURRENT_SOURCE_DIR}/Assets.h
+${CMAKE_CURRENT_SOURCE_DIR}/Entity.h
+${CMAKE_CURRENT_SOURCE_DIR}/EntityManager.h
+${CMAKE_CURRENT_SOURCE_DIR}/GameEngine.h
+${CMAKE_CURRENT_SOURCE_DIR}/SceneABS.h
+${CMAKE_CURRENT_SOURCE_DIR}/Vec2.h
+${CMAKE_CURRENT_SOURCE_DIR}/Physics.h
+${CMAKE_CURRENT_SOURCE_DIR}/Sprite.h
+)
+
+
+target_sources(Game PRIVATE 
+${SOURCES}
+)
+
+source_group(TREE ${CMAKE_SOURCE_DIR} FILES ${SOURCES})
+
+target_include_directories(Game PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_subdirectory(Scenes)
+add_subdirectory(Utils)

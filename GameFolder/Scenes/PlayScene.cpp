@@ -1,7 +1,7 @@
 #include "PlayScene.h"
-#include "../../Physics.h"
+#include "../Physics.h"
 #include <fstream>
-#include "../levelEditorScene/platformerLevelEdit.h"
+#include "platformerLevelEdit.h"
 
 PlayScene::PlayScene() {};
 
@@ -27,7 +27,7 @@ void PlayScene::init()
 	_player->addComponent<CInput>();
 	_player->addComponent<CScore>(0);
 
-	readLevelCfgF("./cfgTemp.cfg");
+	readLevelCfgF("../Assets/cfgFiles/cfgTemp.cfg");
 }
 
 
@@ -70,7 +70,7 @@ void PlayScene::readLevelCfgF(const std::string& path)
 					//if texture for a sprite is not loaded into the memory, load it
 					if (_game->getAssets().getTextures().find(textureName) == _game->getAssets().getTextures().end())
 					{
-						_game->getAssets().addTexture(textureName, "./GameFolder/Assets/Textures/" + textureName);
+						_game->getAssets().addTexture(textureName, "./../Assets/Textures/" + textureName);
 					}
 					
 					fin >> texRect.x >> texRect.y >> texRect.width >> texRect.height;
