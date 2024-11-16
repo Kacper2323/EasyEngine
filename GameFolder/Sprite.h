@@ -11,7 +11,7 @@ public:
 
 	Sprite() {};
 
-	Sprite(Texture2D texture)
+	Sprite(Texture2D& texture)
 		:texture(texture)
 	{
 		origin.x = texture.width / 2.0f;

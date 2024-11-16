@@ -106,7 +106,7 @@ void GameEngine::sUserInput()
 
 		if (IsMouseButtonPressed(key - mouseButtonOFFSET))
 		{
-			Action mousePressed("LeftClick", "START");
+			Action mousePressed(action, "START");
 			mousePressed.mouseX = GetMouseX();
 			mousePressed.mouseY = GetMouseY();
 			currentScene()->doAction(mousePressed);

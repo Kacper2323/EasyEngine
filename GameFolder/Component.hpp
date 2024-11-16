@@ -39,7 +39,7 @@ public:
 
 	CSprite() {};
 
-	CSprite(Texture2D texture)
+	CSprite(Texture2D& texture)
 		:texture(texture)
 	{
 		origin.x = texture.width / 2.0f;
