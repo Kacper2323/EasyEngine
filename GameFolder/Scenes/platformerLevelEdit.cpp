@@ -232,7 +232,7 @@ void PLevelEditor::saveLevel(const std::string& path)
 			std::string textureName;
 			for (auto& [k, v] : _game->getAssets().getTextures())
 			{
-				if (&cS.texture == &v)
+				if (cS.texture.id == v.id)
 				{
 					cfgFile << IO::formatComponent(cS, k);
 					break;
