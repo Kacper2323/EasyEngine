@@ -692,6 +692,9 @@ void PLevelEditor::imGuiMakeSprite()
 
 		_selectedSprite.textureRect = _spriteRect;
 
+		_selectedSprite.origin.x = _spriteRect.width/2;
+		_selectedSprite.origin.y = _spriteRect.height/2;
+
 		ImGui::Dummy(ImVec2(0, 20));
 		ImGui::Text("Sprite name:");
 		ImGui::InputText("##spriteName", _spriteNameBuffer, IM_ARRAYSIZE(_spriteNameBuffer));
