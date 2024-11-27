@@ -34,9 +34,19 @@ void PLevelEditor::init()
 	_textureData.texturePath = "./../Assets/Textures/";
 
 	_textureData.textureNames = IO::listFiles(_textureData.texturePath);
-	if (_textureData.textureNames.empty()) { return; };
+	if (_textureData.textureNames.empty()) 
+	{ 
+		MSG::ERROR("No textures found in ", _textureData.texturePath);
+		return; 
+	};
 
-	readLevelCfgF("../Assets/cfgFiles/cfgTemp.cfg");
+	configFiles = IO::listFiles(cfgDirPath);
+	if(configFiles.empty())
+		MSG::WARNING("No config files found in /Assets/cfgFiles/");
+	else
+		_currentCfgFile = configFiles[0];
+
+	readLevelCfgF(cfgDirPath + _currentCfgFile);
 	
 	//initialize _selectedTexture to first element in textureNames for the sprite picker
 	_selectedTexture = _textureData.textureNames[0];
@@ -69,7 +79,7 @@ void PLevelEditor::sDoAction(Action action)
 			auto& cT = e->getComponent<CTransform>();
 
 			//get the position of the mouse on the screen
-			Vector2 mousePos(action.mouseX, action.mouseY);
+			Vector2 mousePos = {(float)action.mouseX, (float)action.mouseY};
 
 			//map the position in the world coordinates (the screen can show zoomed in or moved view)
 			Vector2 pixelPos = { GetScreenToWorld2D(mousePos, _camera)};
@@ -97,11 +107,12 @@ void PLevelEditor::sDoAction(Action action)
 		if(action.mouseWheelDelta != 0)
 		{
 			float zoom = action.mouseWheelDelta > 0 ? 0.9f : 10.0f/9.0f;
+			Vector2 mousePos = {(float)action.mouseX, (float)action.mouseY};
 
-			const Vector2 beforeCoord = { GetScreenToWorld2D(Vector2(action.mouseX, action.mouseY), _camera) };
+			const Vector2 beforeCoord = { GetScreenToWorld2D(mousePos, _camera) };
 			_camera.zoom *= zoom;
 
-			const Vector2 afterCoord = { GetScreenToWorld2D(Vector2(action.mouseX, action.mouseY), _camera) };
+			const Vector2 afterCoord = { GetScreenToWorld2D(mousePos, _camera) };
 
 			//_view.move(beforeCoord - afterCoord);
 			_camera.target.x += (beforeCoord.x - afterCoord.x);
@@ -251,13 +262,15 @@ void PLevelEditor::sBBRender()
 	{
 		if (e->getComponent<CBoundingBox>().has)
 		{
-			Vec2 bbSize = e->getComponent<CBoundingBox>().size;
+			auto& bb = e->getComponent<CBoundingBox>();
 			Vec2 bbPos = e->getComponent<CTransform>().pos;
 
 			if(e->getComponent<CBoundingBox>().selected)
-				DrawRectangleLines(bbPos.x - bbSize.x / 2, bbPos.y - bbSize.y / 2, bbSize.x, bbSize.y, GREEN);
+				DrawRectangleLines(bbPos.x - bb.halfSize.x + bb.offset.x, bbPos.y - bb.halfSize.y + bb.offset.y,
+				 bb.size.x, bb.size.y, GREEN);
 			else
-				DrawRectangleLines(bbPos.x - bbSize.x / 2, bbPos.y - bbSize.y / 2, bbSize.x, bbSize.y, RED);
+				DrawRectangleLines(bbPos.x - bb.halfSize.x + bb.offset.x, bbPos.y - bb.halfSize.y + bb.offset.y,
+				 bb.size.x, bb.size.y, RED);
 		}
 	}
 }
@@ -275,6 +288,47 @@ void PLevelEditor::mainMenu()
 
 	ImGui::Text("This is the main menu.");
 	ImGui::Text("Select what you want to do.");
+	
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
+
+	ImGui::Text("Pick a config file to edit.");
+	if(!configFiles.empty())
+	{
+		if (ImGui::BeginCombo("##cfgList", _currentCfgFile.c_str())) // list to pick a cfg file to edit
+		{
+			for (auto& e : configFiles)
+			{
+				const bool isSelected = (_currentCfgFile == e);
+
+				if (ImGui::Selectable(e.c_str(), isSelected, ImGuiSelectableFlags_AllowDoubleClick))
+				{
+					saveLevel(cfgDirPath + _currentCfgFile);
+					_currentCfgFile = e;
+					for(auto e : _entities.getEntities())
+					{
+						e->destroy();
+					}
+					readLevelCfgF(cfgDirPath + _currentCfgFile);
+				}
+				if (isSelected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+
+		ImGui::Dummy(ImVec2(0.0f, 10.0f));
+
+		ImGui::Text("new cfg file:");
+		ImGui::InputText("##spriteName", _newCfgNameBuffer, IM_ARRAYSIZE(_newCfgNameBuffer));
+
+		if(ImGui::Button("New"))
+		{
+			std::ofstream cfgFile(cfgDirPath + _newCfgNameBuffer + ".cfg", std::ofstream::out | std::ofstream::trunc);
+			cfgFile.close();
+			configFiles = IO::listFiles(cfgDirPath);
+			_newCfgNameBuffer[0] = NULL; //empty the buffer after creating new file
+		}
+	}
 
 	ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
@@ -301,7 +355,7 @@ void PLevelEditor::mainMenu()
 
 	if (ImGui::Button("Save level"))
 	{
-		saveLevel("../Assets/cfgFiles/cfgTemp.cfg");
+		saveLevel(cfgDirPath + _currentCfgFile);
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Play"))
@@ -420,7 +474,6 @@ void PLevelEditor::imGuiEditEntity()
 
 		selectedEntity->addComponent<CBoundingBox>(Vec2(32, 32));
 		selectedEntity->getComponent<CBoundingBox>().selected = true;
-
 	}
 
 	ImGui::Dummy(ImVec2(0.0f, 5.0f));
@@ -441,9 +494,6 @@ void PLevelEditor::imGuiEditEntity()
 		Rectangle spriteSize = entity->getComponent<CSprite>().textureRect;
 
 		Vector2 imageSize = spriteResize(spriteSize, 100);
-
-		/*ImGui::Image(selectedEntity->getComponent<CSprite>().sprite,
-			imageSize, sf::Color::White, sf::Color::White);*/
 
 		rlImGuiImageRect(&selectedEntity->getComponent<CSprite>().texture, imageSize.x, imageSize.y, spriteSize);
 
@@ -474,7 +524,6 @@ void PLevelEditor::imGuiEditEntity()
 				ImGui::DragFloat("Position on Y axis", &comp.pos.y);
 				ImGui::PushItemWidth(100);
 				ImGui::SliderFloat("Rotation", &comp.angle, 0, 360);
-
 			}
 			ImGui::EndTabItem();
 		}
@@ -496,21 +545,22 @@ void PLevelEditor::imGuiEditEntity()
 				ImGui::DragFloat("BB width", &comp.size.x);
 				ImGui::SameLine(); ImGui::PushItemWidth(100);
 				ImGui::DragFloat("BB height", &comp.size.y);
-				ImGui::Checkbox("Physical?", &comp.physical);
 
+				ImGui::DragFloat("BB offset X", &comp.offset.x);
+				ImGui::SameLine(); ImGui::PushItemWidth(100);
+				ImGui::DragFloat("BB offset Y", &comp.offset.y);
+
+				ImGui::Checkbox("Physical?", &comp.physical);
 			}
 			ImGui::EndTabItem();
 		}
 		if (ImGui::BeginTabItem("Sprite"))
 		{
-
 			if(!_sprites.empty())
 			{ 
-				
 				ImGui::TextColored(_imGuiVars.messageColor, "Pick a sprite:");
 				if (ImGui::BeginCombo("##List2", _selectedSpriteInMap.c_str()))
 				{
-
 					for (auto e : _sprites)
 					{
 						const bool isSelected = (_selectedSpriteInMap == e.first);
@@ -527,7 +577,7 @@ void PLevelEditor::imGuiEditEntity()
 					}
 					ImGui::EndCombo();
 				}
-
+				if(_selectedSpriteInMap != "")
 				rlImGuiImageRect(&_selectedSprite.texture, spriteResize(_selectedSprite.textureRect, 50).x, 
 					spriteResize(_selectedSprite.textureRect, 50).y, _selectedSprite.textureRect);
 
@@ -535,7 +585,6 @@ void PLevelEditor::imGuiEditEntity()
 				{
 					selectedEntity->addComponent<CSprite>(_selectedSprite);
 				}
-
 			}
 			else
 			{
@@ -623,12 +672,13 @@ void PLevelEditor::imGuiMakeSprite()
 	{
 		ImGui::Text("Loaded");
 
-		Vector2 texSize = { _game->getAssets().getTexture(_selectedTexture).width, _game->getAssets().getTexture(_selectedTexture).height };
+		Vector2 texSize = { (float)_game->getAssets().getTexture(_selectedTexture).width, 
+							(float)_game->getAssets().getTexture(_selectedTexture).height };
 
 		if (resetFlag) //this resets the displayed texture rect to the whole texture
 		{
 			_selectedSprite = Sprite(_game->getAssets().getTexture(_selectedTexture));
-			_spriteRect = Rectangle(0, 0, texSize.x, texSize.y);
+			_spriteRect = {0, 0, texSize.x, texSize.y};
 			resetFlag = 0;
 		}
 
@@ -748,8 +798,11 @@ void PLevelEditor::readLevelCfgF(const std::string& path)
 				if (component == "CBoundingBox")
 				{
 					Vec2 size;
+					Vec2 offset;
 					fin >> size.x >> size.y;
+					fin >> offset.x >> offset.y;
 					entity->addComponent<CBoundingBox>(size);
+					entity->getComponent<CBoundingBox>().offset = offset;
 				}
 				else if (component == "CTransform")
 				{

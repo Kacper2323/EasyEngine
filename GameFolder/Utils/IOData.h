@@ -40,9 +40,10 @@ namespace IO
 		std::string cBoundingBox;
 
 		cBoundingBox += "CBoundingBox ";
-		cBoundingBox += std::to_string(cBB.size.x) + " " + std::to_string(cBB.size.y);
+		cBoundingBox += std::to_string(cBB.size.x) + " " + std::to_string(cBB.size.y) + " ";
+		cBoundingBox += std::to_string(cBB.offset.x) + " " + std::to_string(cBB.offset.y);
 		cBoundingBox += "\n";
-
+		
 		return cBoundingBox;
 	}
 

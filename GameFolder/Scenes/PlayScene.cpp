@@ -50,8 +50,11 @@ void PlayScene::readLevelCfgF(const std::string& path)
 				if (component == "CBoundingBox")
 				{
 					Vec2 size;
+					Vec2 offset;
 					fin >> size.x >> size.y;
+					fin >> offset.x >> offset.y;
 					entity->addComponent<CBoundingBox>(size);
+					entity->getComponent<CBoundingBox>().offset = offset;
 				}
 				else if (component == "CTransform")
 				{
@@ -166,10 +169,11 @@ void PlayScene::sBBRender()
 	{
 		if (e->getComponent<CBoundingBox>().has)
 		{
-			Vec2 bbSize = e->getComponent<CBoundingBox>().size;
+			auto& bb = e->getComponent<CBoundingBox>();
 			Vec2 bbPos = e->getComponent<CTransform>().pos;
 
-			DrawRectangleLines(bbPos.x - bbSize.x/2, bbPos.y - bbSize.y/2, bbSize.x, bbSize.y, RED);
+			DrawRectangleLines(bbPos.x - bb.halfSize.x + bb.offset.x, bbPos.y - bb.halfSize.y + bb.offset.y
+			, bb.size.x, bb.size.y, RED);
 		}
 	}
 }

@@ -32,7 +32,7 @@ void GameEngine::init(const std::string& path)
 	_assets.addAnimation("Apple", "Apple.png", 17, 2, Vec2(0, 0), Vec2(32, 32));
 	_assets.addAnimation("hit", "hit.png", 7, 2, Vec2(0, 0), Vec2(32, 32));
 
-	_assets.addFont("OpenSans.ttf", "./GameFolder/zOpenSans.ttf");
+	_assets.addFont("OpenSans.ttf", "../Assets/zOpenSans.ttf");
 
 	changeScene("LevelEditor", std::make_shared<PLevelEditor>(this), 0);
 }
